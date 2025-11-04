@@ -1,0 +1,40 @@
+<!-- packages/app/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>True Walk</title>
+
+    <!-- Main stylesheet from public/styles/ -->
+    <link rel="stylesheet" href="/styles/styles.css" />
+
+    <!-- Google Fonts (Open Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="theme">
+    <!-- mu-history intercepts clicks -->
+    <mu-history provides="truewalk:history" style="display: contents">
+      <!-- mu-auth manages login/logout, redirect to /login.html if unauthorized -->
+      <mu-auth provides="truewalk:auth" redirect="/login.html" style="display: contents">
+        <!-- mu-store must be inside mu-auth so it can access Auth.User -->
+        <mu-store provides="truewalk:model" style="display: contents">
+          <!-- app-header always visible -->
+          <app-header></app-header>
+
+          <!-- mu-switch: client‐side router -->
+          <mu-switch></mu-switch>
+        </mu-store>
+      </mu-auth>
+    </mu-history>
+
+    <!-- load our main.ts bundle -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

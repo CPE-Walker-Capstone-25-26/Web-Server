@@ -1,0 +1,29 @@
+{
+  "name": "csc437",
+  "version": "1.0.0",
+  "description": "Walk Hard Website",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server dist -p 3000",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx vite",
+    "build": "npx tsc && npx vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikolaiDowns/CSC437.git"
+  },
+  "author": "Nikolai Downs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NikolaiDowns/CSC437/issues"
+  },
+  "homepage": "https://github.com/NikolaiDowns/CSC437#readme",
+  "workspaces": [
+    "packages/server",
+    "packages/proto"
+  ],
+  "dependencies": {
+    "mongodb": "^6.20.0"
+  }
+}
