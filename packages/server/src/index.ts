@@ -10,14 +10,24 @@ import authRouter, { authenticateUser } from "./routes/auth";
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 
+const staticFolder = process.env.STATIC || path.join(__dirname, "../public")
+
 //Serve static assets
 app.use(
-  express.static(process.env.STATIC || path.join(__dirname, "../public"))
+  express.static(staticFolder)
 );
 app.use(
   "/node_modules",
   express.static(path.join(__dirname, "../node_modules"))
 );
+
+app.get('/app*', (req, res) => {
+  const options = {
+      root: staticFolder
+  };
+
+  res.sendFile('index.html', options);
+});
 
 // Enable CORS and explicitly allow the Authorization header
 app.use(

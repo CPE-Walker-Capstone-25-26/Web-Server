@@ -4,10 +4,10 @@
   "description": "Walk Hard Website",
   "main": "index.js",
   "scripts": {
-    "start": "http-server dist -p 3000",
+    "start": "npm run build:all && npm -w server run start:app",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx vite",
-    "build": "npx tsc && npx vite build"
+    "build:all": "npm -w server run build && npm -w app run build"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   "homepage": "https://github.com/NikolaiDowns/CSC437#readme",
   "workspaces": [
     "packages/server",
-    "packages/proto"
+    "packages/proto",
+    "packages/app"
   ],
   "dependencies": {
     "mongodb": "^6.20.0"

@@ -247,3 +247,9 @@
     }
   
   
+    .home-link {
+      display: flex;             /* So the image and text stay aligned horizontally */
+      align-items: center;
+      text-decoration: none;     /* Remove underline */
+      color: inherit;            /* Keep existing text color */
+    }

@@ -78,9 +78,10 @@ let AppHeader = class AppHeader extends LitElement {
         return html `
       <header class="toolbar">
         <div class="toolbar-left">
-          <!-- Keep the SVG icon; turn “TRUE WALK” text into a link back to /app -->
-          <img src="/icons/walkhard.svg" alt="True Walk logo" class="box-icon-small" />
-          <strong>TRUE WALK</strong>
+          <a href="/app" class="home-link">
+            <img src="/icons/walkhard.svg" alt="True Walk logo" class="box-icon-small" />
+            <strong>TRUE WALK</strong>
+	  </a>
         </div>
 
         <div class="toolbar-right">
@@ -180,6 +181,12 @@ AppHeader.styles = css `
       height: 60px;
       width: 100%;
       flex-shrink: 0;
+    }
+
+    .home-link {
+      text-decoration: none;      /* Remove underline */
+      color: inherit;             /* Keep original text color */
+      display: flex;      /* Allow wrapping a div */
     }
   `;
 __decorate([
