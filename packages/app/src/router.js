@@ -4,6 +4,8 @@ import "./views/home-view";
 import "./views/track-progress-view";
 import "./views/share-progress-view";
 import "./views/patient-progress-view";
+import "./views/about-view";
+
 function requiresAuth(viewTemplate) {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -41,6 +43,13 @@ export const routes = [
         path: "/app/patients",
         view: () => {
             return requiresAuth(html `<patient-progress-view></patient-progress-view>`);
+        },
+    },
+    // About View
+    {
+        path: "/app/about",
+        view: () => {
+            return html `<about-view></about-view>`;
         },
     },
     // Catch‐all 404:

@@ -253,3 +253,91 @@
       text-decoration: none;     /* Remove underline */
       color: inherit;            /* Keep existing text color */
     }
+
+/* About view styles */
+.about-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  color: var(--color-primary);
+}
+
+.about-header {
+  margin-bottom: 1rem;
+}
+
+.about-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  color: var(--color-primary);
+}
+
+.lead {
+  margin: 0;
+  color: var(--color-primary);
+  line-height: 1.5;
+  font-size: 1.02rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+.impact h2,
+.details h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+}
+
+.impact ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.impact li {
+  background: var(--box-bg, #fff);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  color: var(--color-primary);
+}
+
+.impact li strong {
+  color: var(--color-secondary);
+  font-weight: 700;
+  min-width: 4.75rem;
+  display: inline-block;
+}
+
+.details p {
+  margin: 0 0 0.75rem 0;
+  line-height: 1.6;
+}
+
+.about-container .impact,
+.about-container .details {
+  padding: 0.5rem;
+}
+
+/* Ensure good contrast in dark mode */
+html.dark .impact li {
+  background: var(--color-box);
+  box-shadow: none;
+}
+

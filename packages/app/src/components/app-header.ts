@@ -191,7 +191,7 @@ export class AppHeader extends LitElement {
           <a href="/app/patients">Patient Progress</a>
           <a href="/pricing.html">Pricing</a>
           <a href="/contact.html">Contact Us</a>
-          <a href="/about.html">About Us</a>
+          <a href="/app/about">About Us</a>
           
         </div>
       </header>
