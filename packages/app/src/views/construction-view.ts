@@ -3,8 +3,8 @@
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 
-@customElement("contact-view")
-export class ContactView extends LitElement {
+@customElement("construction-view")
+export class ConstructionView extends LitElement {
   // Use styles.css
   protected createRenderRoot() {
     return this;
