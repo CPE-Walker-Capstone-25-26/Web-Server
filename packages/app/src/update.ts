@@ -35,7 +35,7 @@ export default function update(
 
       // Send POST /api/users/:id/share
       fetch(
-        `http://localhost:3000/api/users/${encodeURIComponent(
+        `/api/users/${encodeURIComponent(
           originalUser.id
         )}/share`,
         {
@@ -90,7 +90,7 @@ export default function update(
       const rawToken = localStorage.getItem("token") || "";
       // Send DELETE /api/users/:userid/share/:withUserId
       fetch(
-        `http://localhost:3000/api/users/${encodeURIComponent(
+        `/api/users/${encodeURIComponent(
           userid
         )}/share/${encodeURIComponent(withUserId)}`,
         {
@@ -129,7 +129,7 @@ export default function update(
     //  USER/LOAD
     case "user/load": {
       const token = localStorage.getItem("token") || "";
-      fetch("http://localhost:3000/api/auth/me", {
+      fetch("/api/auth/me", {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((response) => {
