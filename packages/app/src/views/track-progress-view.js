@@ -32,10 +32,19 @@ let TrackProgressView = class TrackProgressView extends View {
     render() {
         // Show a loading message:
         if (!this.currentUser || !this.currentUser.usage) {
-            return html `<h2>Loading usage data…</h2>`;
+            //return html`<div class="error-message">Error loading user data.</div>`;
+            this.currentUser = {
+                id: "demo-user",
+                name: "Demo User",
+                tocAccepted: true,
+                usage: Array.from({ length: 137 }, () => Math.floor(Math.random() * 100))
+            };
         }
         // Split number[] array into eight charts:
         const usage = this.currentUser.usage;
+        if (!usage || usage.length < 137) {
+            return html `<div class="error-message">Insufficient usage data.</div>`;
+        }
         const SIZES = [24, 24, 7, 7, 31, 31, 12, 12];
         const VARIANTS = [
             "day",

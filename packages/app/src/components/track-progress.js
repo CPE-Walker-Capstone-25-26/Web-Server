@@ -16,7 +16,7 @@ async function boot() {
         return;
     }
     // If token exists, attempt to fetch /api/auth/me
-    const res = await fetch('/api/auth/me', {
+    const res = await fetch(`/api/auth/me`, {
         headers: { 'Authorization': `Bearer ${token}` }
     });
     if (!res.ok) {
