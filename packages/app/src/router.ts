@@ -5,6 +5,7 @@ import "./views/home-view";
 import "./views/track-progress-view";
 import "./views/share-progress-view";
 import "./views/patient-progress-view";
+import "./views/about-view";
 
 export interface AppRoute {
   path: string;
