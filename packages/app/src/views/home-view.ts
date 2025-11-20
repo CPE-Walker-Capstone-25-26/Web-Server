@@ -14,7 +14,7 @@ export class HomeView extends LitElement {
     return html`
       <div class="container">
         <div class="row">
-          <a href="/app/purchasing" class="box middle picture-link">
+          <a href="/app/pricing" class="box middle picture-link">
             <img
               data-light="/images/handle.png"
               data-dark="/images/handle_inv3.jpg"
@@ -38,10 +38,6 @@ export class HomeView extends LitElement {
           <img src="/icons/walkhard.svg" alt="True Walk logo" class="box-icon" />
           “Sometimes the smallest step in the right direction ends up being the
           biggest step of your life.”
-        </div>
-
-        <div class="box mission">
-          <a href="/app/mission">Our Mission</a>
         </div>
       </div>
     `;
