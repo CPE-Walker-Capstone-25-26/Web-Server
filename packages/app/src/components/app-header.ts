@@ -196,7 +196,7 @@ export class AppHeader extends LitElement {
         </div>
       </header>
       <!-- Spacer so that page content is pushed below the fixed header -->
-      <div class="spacer"></div>
+      <div class="header-spacer"></div>
     `;
   }
 }
