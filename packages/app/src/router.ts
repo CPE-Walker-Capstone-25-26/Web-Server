@@ -63,6 +63,13 @@ export const routes: AppRoute[] = [
     },
   },
 
+  {
+    path: "/app/about",
+    view: () => {
+      return html`<about-view></about-view>`;
+    },
+  },
+
   // Catch‐all 404:
   { path: "/(.*)", view: () => html`<h1>404 Not Found</h1>` },
 ];
