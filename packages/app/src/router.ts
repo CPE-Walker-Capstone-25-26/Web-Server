@@ -6,6 +6,7 @@ import "./views/track-progress-view";
 import "./views/share-progress-view";
 import "./views/patient-progress-view";
 import "./views/about-view";
+import "./views/contact-view";
 
 export interface AppRoute {
   path: string;
@@ -68,6 +69,13 @@ export const routes: AppRoute[] = [
     path: "/app/about",
     view: () => {
       return html`<about-view></about-view>`;
+    },
+  },
+
+  {
+    path: "/app/contact",
+    view: () => {
+      return html`<contact-view></contact-view>`;
     },
   },
 
