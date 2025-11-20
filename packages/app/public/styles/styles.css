@@ -341,3 +341,23 @@ html.dark .impact li {
   box-shadow: none;
 }
 
+/* Construction view image sizing */
+.construction-container {
+  text-align: center;
+}
+
+.construction-image {
+  width: 360px;           /* fixed display size */
+  height: 240px;          /* fixed display size */
+  object-fit: contain;    /* maintain aspect ratio without cropping */
+  display: block;
+  margin: 1.5rem auto;
+}
+
+@media (max-width: 420px) {
+  .construction-image {
+    width: 260px;
+    height: 180px;
+  }
+}
+

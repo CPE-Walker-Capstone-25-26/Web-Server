@@ -16,7 +16,7 @@ export class ConstructionView extends LitElement {
           <h1 id="construction-heading">Under Construction</h1>
           <p class="lead">This page is currently under construction. Please check back later!</p>
         </header>
-        <img src="/images/construction.png" alt="Construction illustration" />
+        <img class="construction-image" src="/images/construction.png" alt="Construction illustration" />
       </div>
     `;
   }
