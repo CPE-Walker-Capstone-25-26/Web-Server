@@ -7,6 +7,7 @@ import "./views/share-progress-view";
 import "./views/patient-progress-view";
 import "./views/about-view";
 import "./views/contact-view";
+import "./views/construction-view";
 
 export interface AppRoute {
   path: string;
@@ -76,6 +77,13 @@ export const routes: AppRoute[] = [
     path: "/app/contact",
     view: () => {
       return html`<contact-view></contact-view>`;
+    },
+  },
+
+  {
+    path: "/app/pricing",
+    view: () => {
+      return html`<construction-view></construction-view>`;
     },
   },
 

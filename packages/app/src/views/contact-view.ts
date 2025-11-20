@@ -13,7 +13,7 @@ export class ContactView extends LitElement {
     return html`
       <section class="about-container contact-container" aria-labelledby="contact-heading">
         <header class="about-header">
-          <h1 id="contact-heading">Contact Carl Sloan</h1>
+          <h1 id="contact-heading">Contact Us</h1>
           <p class="lead">If you would like to learn more about True Walk, please contact Carl Sloan.</p>
         </header>
 
