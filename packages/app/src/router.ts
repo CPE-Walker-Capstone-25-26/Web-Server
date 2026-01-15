@@ -8,6 +8,7 @@ import "./views/patient-progress-view";
 import "./views/about-view";
 import "./views/contact-view";
 import "./views/construction-view";
+import "./components/run-chart";
 
 export interface AppRoute {
   path: string;
@@ -84,6 +85,13 @@ export const routes: AppRoute[] = [
     path: "/app/pricing",
     view: () => {
       return html`<construction-view></construction-view>`;
+    },
+  },
+
+  {
+    path: "/app/run-chart",
+    view: () => {
+      return html`<run-chart></run-chart>`;
     },
   },
 

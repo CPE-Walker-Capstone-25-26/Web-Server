@@ -6,6 +6,7 @@ import path from "path";
 import { connect } from "./services/mongo";
 import usersRouter from "./routes/users";
 import authRouter, { authenticateUser } from "./routes/auth";
+import runsRouter from "./routes/runs";
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -48,6 +49,7 @@ app.use("/api/auth", authRouter);
 
 // Mount protected User routes at /api/users
 app.use("/api/users", authenticateUser, usersRouter);
+app.use("/api/runs", authenticateUser, runsRouter);
 
 // for debugging
 app.get("/hello", (_req, res) => res.send("Hello, World"));
