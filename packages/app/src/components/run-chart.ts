@@ -5,17 +5,13 @@ import Chart from "chart.js/auto";
 
 @customElement("run-chart")
 export class RunChart extends LitElement {
-  //@state() private runData: number[] = [];
+  @state() private leftData: number[] = [2, 4, 6, 3];
+  @state() private rightData: number[] = [1, 5, 7, 9];
   @state() private _chart: Chart | null = null;
 
-  // Check if signed‐in
-  //@state() private authenticated = false;
-  //@state() private username: string | null = null;
-  //private authObserver!: Observer<any>;
 
   constructor() {
     super();
-    //this.authObserver = new Observer(this, "truewalk:auth");
   }
 
   connectedCallback() {
@@ -26,19 +22,30 @@ export class RunChart extends LitElement {
     super.disconnectedCallback();
   }
 
-  protected createRenderRoot() {
-    return this;
-  }
-
   static styles = css`
-    /* Add your styles here */
+    :host {
+      display: block;
+      width: 100%;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 500px;
+    }
   `;
 
   render() {
     const chart = html`<canvas id="runChartCanvas"></canvas>`;
 
     return html`
-      <div>
+      <div class="chart-container">
         <h2>Run Chart</h2>
         <!-- Render run chart here -->
         ${chart}
@@ -55,10 +62,10 @@ export class RunChart extends LitElement {
     this._chart = new Chart(canvas, {
       type: "line",
       data: {
-        labels: [1, 2, 3, 4],
+        labels: Array.from({ length: this.leftData.length }, (_, i) => i),
         datasets: [
-          { label: "A", data: [5, 6, 10, 11], borderWidth: 2, tension: 0.3 },
-          { label: "B", data: [2, 7, 9, 8], borderWidth: 2, tension: 0.3 },
+          { label: "Left", data: this.leftData, borderWidth: 2, tension: 0.3 },
+          { label: "Right", data: this.rightData, borderWidth: 2, tension: 0.3 },
         ],
       },
       options: {
