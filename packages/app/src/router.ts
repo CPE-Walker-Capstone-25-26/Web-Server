@@ -89,9 +89,9 @@ export const routes: AppRoute[] = [
   },
 
   {
-    path: "/app/run-chart",
+    path: "/app/example-chart",
     view: () => {
-      return html`<run-chart></run-chart>`;
+      return html`<run-chart debugMode=${true}></run-chart>`;
     },
   },
 
