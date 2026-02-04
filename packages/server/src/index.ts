@@ -41,7 +41,7 @@ app.use(
 );
 
 //JSON parser middleware
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 // Mount Auth routes at /api/auth
 

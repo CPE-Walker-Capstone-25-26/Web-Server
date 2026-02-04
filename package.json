@@ -7,13 +7,18 @@
     "start": "npm run build:all && npm -w server run start:app",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx vite",
-    "build:all": "npm -w server run build && npm -w app run build"
+    "build:all": "npm -w server run build && npm -w app run build",
+    "daemon:start": "pm2 start npm --name truewalk-app -- run start",
+    "daemon:stop": "pm2 stop truewalk-app",
+    "daemon:restart": "pm2 restart truewalk-app",
+    "daemon:logs": "pm2 logs truewalk-app",
+    "daemon:kill": "pm2 delete truewalk-app"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NikolaiDowns/CSC437.git"
   },
-  "author": "Nikolai Downs",
+  "author": "Calvin Matsushita, Nikolai Downs",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/NikolaiDowns/CSC437/issues"
