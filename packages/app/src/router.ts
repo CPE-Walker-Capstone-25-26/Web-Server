@@ -9,6 +9,9 @@ import "./views/about-view";
 import "./views/contact-view";
 import "./views/construction-view";
 import "./components/run-chart";
+import "./views/run-view";
+
+import {Switch} from "@calpoly/mustang";
 
 export interface AppRoute {
   path: string;
@@ -91,7 +94,16 @@ export const routes: AppRoute[] = [
   {
     path: "/app/example-chart",
     view: () => {
-      return html`<run-chart debugMode=${true}></run-chart>`;
+      return html`<run-chart .debugMode=${true}></run-chart>`;
+    },
+  },
+
+  {
+    path: "/app/run/:id",
+    view: (params: Switch.Params) => {
+      return requiresAuth(
+        html`<run-view src=${params.id}></run-view>`
+      );
     },
   },
 

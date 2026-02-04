@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "main": "dist/index.js",
+  "exports": {
+    "./models": {
+      "import": "./src/models/models.ts"
+    }
+  },
   "scripts": {
     "dev": "nodemon --watch src --ext ts,json --exec \"npm run build && npm run start:node\"",
     "build": "npm run clean && npx esbuild-node-tsc --outdir dist",

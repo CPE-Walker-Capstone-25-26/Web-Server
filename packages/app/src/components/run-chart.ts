@@ -5,8 +5,11 @@ import Chart from "chart.js/auto";
 
 @customElement("run-chart")
 export class RunChart extends LitElement {
-  @state() private leftData: number[] = [];
-  @state() private rightData: number[] = [];
+  @property({ type: Array })
+  private leftData: number[] = [];
+  @property({ type: Array })
+  private rightData: number[] = [];
+
   @state() private _chart: Chart | null = null;
 
   @property({ type: Boolean })
