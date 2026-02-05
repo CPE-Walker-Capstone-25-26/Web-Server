@@ -1,14 +1,14 @@
 {
-  "name": "csc437",
+  "name": "truewalk",
   "version": "1.0.0",
-  "description": "Walk Hard Website",
+  "description": "truewalk website and webserver",
   "main": "index.js",
   "scripts": {
     "start": "npm run build:all && npm -w server run start:app",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx vite",
     "build:all": "npm -w server run build && npm -w app run build",
-    "daemon:start": "pm2 start npm --name truewalk-app -- run start",
+    "daemon:start": "pm2 start npm --name truewalk-app -- run start && pm2 save",
     "daemon:stop": "pm2 stop truewalk-app",
     "daemon:restart": "pm2 restart truewalk-app",
     "daemon:logs": "pm2 logs truewalk-app",
@@ -16,18 +16,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NikolaiDowns/CSC437.git"
+    "url": "git+https://github.com/CPE-Walker-Capstone-25-26/Web-Server.git"
   },
   "author": "Calvin Matsushita, Nikolai Downs",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/NikolaiDowns/CSC437/issues"
+    "url": "https://github.com/CPE-Walker-Capstone-25-26/Web-Server/issues"
   },
-  "homepage": "https://github.com/NikolaiDowns/CSC437#readme",
+  "homepage": "https://github.com/CPE-Walker-Capstone-25-26/Web-Server#readme",
   "workspaces": [
-    "packages/server",
-    "packages/proto",
-    "packages/app"
+    "packages/*"
   ],
   "dependencies": {
     "mongodb": "^6.20.0"

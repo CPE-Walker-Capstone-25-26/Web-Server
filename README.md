@@ -10,7 +10,7 @@ All data is stored in a MongoDB Atlas database, ensuring scalability and reliabi
 - MongoDB Atlas account (for database hosting)
 - Linux environment* (for deployment)
 
-*Can be run on Windows or Mac for development purposes, but deployment and node scripts are intended for Linux servers.
+> The app can be run on Windows or Mac for development purposes, but deployment and node scripts are intended for Linux servers.
 
 ## Installation
 1. Clone the repository:
@@ -42,7 +42,7 @@ The project is organized as a monorepo using npm workspaces. It contains two mai
 - `packages/server`: Contains the Express server code, API routes, database models, and server configuration.
 - `packages/app`: Contains the single-page frontend application built with the Mustang framework, including components, styles, and static assets.
 
-`packages/proto` contains the prototype code used for initial testing and development as a multi-page application, but is not part of the main application and should be ignored.
+>`packages/proto` contains the prototype code used for initial testing and development as a multi-page application, but is not part of the main application and should be ignored.
 
 ## Running the Server
 The server can be run in two modes: development for testing and production for deployment.
@@ -77,16 +77,34 @@ You can then start the server manually using:
 npm -w server run start:app
 ```
 
-If you want to run the sever in the background, you can use:
+### Deployment
+For deployment, the server is intended to be run on a Linux environment. A number of npm scripts are provided for daemonizing the server and managing the application in a production environment. These scripts utilize `pm2` for process management, allowing the server to run in the background and automatically restart if it crashes. To use these scripts, ensure that `pm2` is installed globally on your system:
 ```bash
-nohup npm run start &
+npm install -g pm2
 ```
+Once `pm2` is installed, you can use the following commands:
+- Start the server in production mode:
+    ```bash
+    npm run daemon:start
+    ```
+- Stop the server:
+    ```bash
+    npm run daemon:stop
+    ```
+- Restart the server (Recompiles and restarts the server process):
+    ```bash
+    npm run daemon:restart
+    ```
+- View server logs:
+    ```bash
+    npm run daemon:logs
+    ```
+- Kill the server process (permanently stop and remove from pm2):
+    ```bash
+    pm2 delete truewalk-app
+    ```
 
-This will kill the server when you close the terminal, but will keep it running in the background until then. To stop the server you will have to manually kill the process. If this is your only node process running on your machine, you can use:
-```bash
-killall node
-```
-
+> Make sure to run `pm2 enable` after setup to ensure the server will restart on system reboot.
 
 ## Acknowledgements
 - Developed as part of the CPE 350/450 course at Cal Poly San Luis Obispo.
