@@ -38,7 +38,7 @@
       const userIn   = document.getElementById('username');
       const passIn   = document.getElementById('password');
       const params   = new URLSearchParams(window.location.search);
-      const redirect = params.get('redirect') || 'track_progress.html';
+      const redirect = params.get('redirect') || '/';
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -58,10 +58,27 @@
             return alert('Login failed: ' + errText);
           }
 
-          const { token } = await res.json();
+          const json = await res.json();
+
+          console.log("Login successful, received info:", json);
+
           // 1) Save token + username locally:
-          localStorage.setItem('token', token);
+          localStorage.setItem('token', json.token);
           localStorage.setItem('username', username);
+
+          const { token } = json;
+          console.log("Using token:", token)
+          const customEvent = new CustomEvent(
+          'auth:message', { 
+          bubbles: true,
+          composed: true,
+          detail: [
+              'auth/signin',
+              { token, redirect: redirect }
+          ]
+          });
+          console.log("dispatching message", customEvent);
+          this.dispatchEvent(customEvent);
 
           // 2) NO Events.relay(...) HERE!  Instead just redirect to the SPA:
           window.location.href = redirect;

@@ -1,15 +1,16 @@
 import { Run } from "server/models";
 import { customElement, property, state } from "lit/decorators.js";
 import { html, css, LitElement } from "lit";
-import { Auth } from "@calpoly/mustang";
+import { Auth, Observer } from "@calpoly/mustang";
 
 @customElement("run-view")
 export class RunView extends LitElement {
   @property({ type: String }) 
   src: string = "";
 
+   _authObserver = new Observer<Auth.Model>(this, "truewalk:auth");
   @state()
-  user?: Auth.User;
+  _user?: Auth.User;
 
   @state()
   run?: Run;
@@ -32,32 +33,53 @@ export class RunView extends LitElement {
     }
   `;
 
+  get authorization(): Record<string, string> | undefined {
+    if (this._user?.authenticated) {
+      console.log("Providing auth header with token");
+      return {
+        Authorization: `Bearer ${(this._user as Auth.AuthenticatedUser).token}`
+      };
+    } else {
+      const token = localStorage.getItem("token");
+      if (token) {
+        console.log("Providing auth header with token from localStorage");
+        return {
+          Authorization: `Bearer ${token}`
+        };
+      }
+    }
+    console.log("No authenticated user; no auth header");
+    return undefined;
+  }
+
   async hydrateRunData() {
     const apiBaseUrl = "/api/runs";
 
-    const token = localStorage.getItem("token") || "";
-
     if (this.src) {
       console.log(`Fetching run data for src: ${this.src}`);
-      fetch(`${apiBaseUrl}/${this.src}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
+      fetch(`${apiBaseUrl}/${this.src}`, { headers: this.authorization })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json()
+        })
         .then((data: Run) => {
           this.run = data;
         })
         .catch((error) => {
           console.error("Error fetching run data:", error);
-          this.error = error;
+          this.error = error.message;
         });
     }
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.hydrateRunData();
+    this._authObserver.observe((auth: Auth.Model) => {
+      this._user= auth.user;
+    });
+    if (this.src) this.hydrateRunData();
   }
 
   renderError(){
