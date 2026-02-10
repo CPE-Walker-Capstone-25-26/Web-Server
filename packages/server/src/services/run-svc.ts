@@ -34,6 +34,10 @@ function index(userId: string): Promise<Run[]> {
   return RunModel.find({ userId }).exec();
 }
 
+function indexLimited(userId: string): Promise<Run[]>{
+  return RunModel.find({ userId }).select("id began distanceKm -_id").exec();
+}
+
 function get(id: string, userId: string): Promise<Run | null> {
   return RunModel.findOne({ id, userId }).exec();
 }
@@ -72,4 +76,4 @@ function remove(id: string, userId: string): Promise<void> {
 
 export { RunModel };
 
-export default { index, get, create, update, remove, RunModel };
+export default { index, indexLimited, get, create, update, remove, RunModel };

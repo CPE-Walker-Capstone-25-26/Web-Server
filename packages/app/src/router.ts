@@ -10,6 +10,7 @@ import "./views/contact-view";
 import "./views/construction-view";
 import "./components/run-chart";
 import "./views/run-view";
+import "./views/track-view";
 
 import {Switch} from "@calpoly/mustang";
 
@@ -46,7 +47,17 @@ export const routes: AppRoute[] = [
   {
     path: "/app/track",
     view: () => {
-      return requiresAuth(html`<track-progress-view></track-progress-view>`);
+      return requiresAuth(html`<track-view></track-view>`);
+    },
+  },
+
+  // Individual Run View
+  {
+    path: "/app/track/:id",
+    view: (params: Switch.Params) => {
+      return requiresAuth(
+        html`<run-view src=${params.id}></run-view>`
+      );
     },
   },
 
@@ -95,15 +106,6 @@ export const routes: AppRoute[] = [
     path: "/app/example-chart",
     view: () => {
       return html`<run-chart .debugMode=${true}></run-chart>`;
-    },
-  },
-
-  {
-    path: "/app/run/:id",
-    view: (params: Switch.Params) => {
-      return requiresAuth(
-        html`<run-view src=${params.id}></run-view>`
-      );
     },
   },
 

@@ -14,6 +14,17 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/limited", async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId as string;
+    const runs = await Runs.indexLimited(userId);
+    return res.json(runs);
+  } catch (err: any) {
+    console.error("GET /api/runs/dates error:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId as string;
