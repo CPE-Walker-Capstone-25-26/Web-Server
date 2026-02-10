@@ -19,16 +19,16 @@ export class HomeView extends LitElement {
               data-light="/images/handle.png"
               data-dark="/images/handle_inv3.jpg"
               src="/images/handle.png"
-              alt="Purchasing"
+              alt=""
             />
-            <span class="overlay-text">Purchasing</span>
+            <span class="overlay-text">Purchase</span>
           </a>
           <a href="/app/track" class="box middle picture-link">
             <img
               data-light="/images/Track Progress.jpg"
               data-dark="/images/Track Progress_inv3.jpg"
               src="/images/Track Progress.jpg"
-              alt="Track Progress"
+              alt=""
             />
             <span class="overlay-text">Track Progress</span>
           </a>

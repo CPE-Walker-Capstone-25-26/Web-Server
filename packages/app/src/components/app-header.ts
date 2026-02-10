@@ -187,8 +187,11 @@ export class AppHeader extends LitElement {
             @option-signout=${(e: Event) => this.doSignOut(e as MouseEvent)}
             @option-toggle-theme=${() => this.toggleTheme()}
           ></options-menu>
+          <a href="/app/track">Track</a>
+          <!-- 
           <a href="/app/share">Share Progress</a>
-          <a href="/app/patients">Patient Progress</a>
+          <a href="/app/patients">Patient Progress</a> 
+          -->
           <a href="/app/pricing">Pricing</a>
           <a href="/app/contact">Contact Us</a>
           <a href="/app/about">About Us</a>
