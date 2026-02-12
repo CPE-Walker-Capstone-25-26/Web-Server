@@ -25,6 +25,21 @@ router.get("/limited", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/limited-after", async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId as string;
+    const from = new Date(req.query.from as string);
+    if (isNaN(from.getTime())) {
+      return res.status(400).json({ error: "Invalid 'from' date" });
+    } 
+    const runs = await Runs.indexLimitedByDate(userId, from, new Date());
+    return res.json(runs);
+  } catch (err: any) {
+    console.error("GET /api/runs/limited-after error:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId as string;

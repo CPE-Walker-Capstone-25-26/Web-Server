@@ -9,6 +9,7 @@ import "./views/about-view";
 import "./views/contact-view";
 import "./views/construction-view";
 import "./components/run-chart";
+import "./components/aggregate-chart";
 import "./views/run-view";
 import "./views/track-view";
 
@@ -105,7 +106,7 @@ export const routes: AppRoute[] = [
   {
     path: "/app/example-chart",
     view: () => {
-      return html`<run-chart .debugMode=${true}></run-chart>`;
+      return html`<aggregate-chart .leftData=${[10, 20, 30]} .rightData=${[15, 25, 35]} .dates=${[new Date(2024, 0, 1), new Date(2024, 0, 2), new Date(2024, 0, 3)]}></aggregate-chart>`;
     },
   },
 
