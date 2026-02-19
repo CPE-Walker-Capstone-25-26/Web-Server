@@ -12,12 +12,13 @@ import "./components/run-chart";
 import "./components/aggregate-chart";
 import "./views/run-view";
 import "./views/track-view";
+import "./views/track-aggregate-view";
 
 import {Switch} from "@calpoly/mustang";
 
 export interface AppRoute {
   path: string;
-  view?: (params?: any) => TemplateResult;
+  view?: (params?: any, query?: any) => TemplateResult;
   redirect?: string;
 }
 
@@ -48,7 +49,18 @@ export const routes: AppRoute[] = [
   {
     path: "/app/track",
     view: () => {
-      return requiresAuth(html`<track-view></track-view>`);
+      const query = new URLSearchParams(window.location.search);
+      const viewMode = query.get("view");
+      if (viewMode === "aggregate") {
+        console.log("Rendering aggregate view");
+        return requiresAuth(
+          html`<track-aggregate-view></track-aggregate-view>`
+        );
+      }
+      console.log("Rendering view ", viewMode);
+      return requiresAuth(
+        html`<track-view></track-view>`
+      );
     },
   },
 

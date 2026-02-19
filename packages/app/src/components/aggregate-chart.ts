@@ -6,14 +6,16 @@ import Chart from "chart.js/auto";
 @customElement("aggregate-chart")
 export class AggregateChart extends LitElement {
   @property({ type: Array })
-  private leftData: number[] = [];
+  leftData: number[] = [];
   @property({ type: Array })
-  private rightData: number[] = [];
+  rightData: number[] = [];
 
   @property({ type: Array })
-  private dates: Date[] = [];
+  dates: Date[] = [];
 
   @state() private _chart: Chart | null = null;
+
+  private _lastUpdateData: { left: number[], right: number[], dates: Date[] } | null = null;
 
   @property({ type: Boolean })
   private debugMode: boolean = false;
@@ -225,8 +227,51 @@ export class AggregateChart extends LitElement {
 
     this._chart.update();
 
+    // Store the initial data
+    this._lastUpdateData = {
+      left: [...this.leftData],
+      right: [...this.rightData],
+      dates: [...this.dates]
+    };
+
     if (this.debugMode){
       this.fillRandomData(3);
+    }
+  }
+
+  updated() {
+    // Check if data has changed and update the chart
+    if (this._chart && this._lastUpdateData) {
+      const dataChanged = 
+        this.leftData !== this._lastUpdateData.left ||
+        this.rightData !== this._lastUpdateData.right ||
+        this.dates !== this._lastUpdateData.dates;
+
+      if (dataChanged && this.leftData.length > 0 && this.rightData.length > 0 && this.dates.length > 0) {
+        console.log("Data changed, updating chart");
+        const labels = this.dates.map((date) => date.getTime());
+
+        const seriesA = labels.map((label, i) => ({
+          x: label,
+          y: this.leftData[i]
+        }));
+
+        const seriesB = labels.map((label, i) => ({
+          x: label,
+          y: this.rightData[i]
+        }));
+
+        this._chart.data.datasets[0].data = seriesA;
+        this._chart.data.datasets[1].data = seriesB;
+        this._chart.update();
+
+        // Update tracking
+        this._lastUpdateData = {
+          left: [...this.leftData],
+          right: [...this.rightData],
+          dates: [...this.dates]
+        };
+      }
     }
   }
 

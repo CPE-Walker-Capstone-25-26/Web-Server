@@ -28,7 +28,7 @@ export class RunView extends LitElement {
     .track-header {
       margin: 0 auto;
       max-width: 1100px;
-      padding: 20px 0;
+      padding: 8px 0;
     }
 
     .run-card-container {
@@ -69,6 +69,22 @@ export class RunView extends LitElement {
       margin: 24px auto 0;
       font-size: 0.98rem;
       color: #3a4b63;
+    }
+
+    .view-links {
+      margin: 0px auto;
+      padding: 8px 0;
+      max-width: 1100px;
+    }
+    
+    .view-links a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+    
+    .view-links a:hover {
+      text-decoration: underline;
     }
   `;
 
@@ -148,7 +164,12 @@ export class RunView extends LitElement {
     }
 
     return html`
+
       <h1 class="track-header">Your Progress</h1>
+      <div class="view-links">
+        <a href="/app/track?view=all" style="text-decoration: underline;">All Runs</a> |
+        <a href="/app/track?view=aggregate">Aggregate</a>
+      </div>
       <div class="run-card-container">
         ${this.runs.map(run => html`
           <div class="run-card">
