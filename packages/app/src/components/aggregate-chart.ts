@@ -78,26 +78,6 @@ export class AggregateChart extends LitElement {
   render() {
     const chart = html`<canvas id="aggregateChartCanvas"></canvas>`;
 
-    const testButtons = html`
-      <div class="chart-test-buttons" style="display: flex; gap: 8px; margin-top: 12px; align-items: center; justify-content: center;">
-        <!-- Buttons to fill random data -->
-        <button @click=${() => this.fillRandomData(0.25)}>15 Min</button>
-        <button @click=${() => this.fillRandomData(1)}>1 Hour</button>
-        <button @click=${() => this.fillRandomData(3)}>3 Hours</button>
-        <button @click=${() => this.fillRandomData(24)}>24 Hours</button>
-        <button @click=${() => {
-          if (!this._chart) return;
-          
-          const dataset0 = this._chart.data.datasets[0] as any;
-          const dataset1 = this._chart.data.datasets[1] as any;
-          dataset0.tension = dataset0.tension === 0 ? 0.1 : 0;
-          dataset1.tension = dataset1.tension === 0 ? 0.1 : 0;
-
-          this._chart.update();
-        }}>Toggle Tension</button>
-      </div>
-      `;
-
     return html`
       <div class="chart-container">
         <!-- Render run chart here -->
@@ -112,7 +92,6 @@ export class AggregateChart extends LitElement {
           }}>
           <span style="font-size: 24px; font-weight: bold;">A</span>
         </div>
-        ${this.debugMode ? testButtons : ''}
       </div>
     `;
   }
@@ -138,41 +117,46 @@ export class AggregateChart extends LitElement {
     }));
 
     this._chart = new Chart(canvas, {
-      type: "line",
+      type: "bar",
       data: {
         datasets: [
           { 
             label: "Left", 
             data: seriesA, 
-            borderWidth: 2, 
-            tension: 0,
-            pointRadius: 0,
-            pointHoverRadius: 3,
-            pointHitRadius: 6
+            backgroundColor: "rgba(54, 162, 235, 0.5)",
+            borderWidth: 1,
+            borderRadius: {
+              topLeft: 4,
+              topRight: 4
+            },
+            categoryPercentage: 0.8,
+            barPercentage: 0.9,
+            grouped: false,
+            maxBarThickness: 40
           },
           { 
             label: "Right", 
             data: seriesB, 
-            borderWidth: 2, 
-            tension: 0,
-            pointRadius: 0,
-            pointHoverRadius: 3,
-            pointHitRadius: 6
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
+            borderWidth: 1,
+            borderRadius: {
+              topLeft: 4,
+              topRight: 4
+            },
+            categoryPercentage: 0.8,
+            barPercentage: 0.9,
+            grouped: false,
+            maxBarThickness: 40
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: true,
-        interaction: { mode: "index", intersect: false },
+        interaction: { mode: "nearest", intersect: false },
         parsing: false,     // IMPORTANT for performance
         animation: false,
         plugins: {
-          decimation: {
-            enabled: true,
-            algorithm: 'lttb',
-            samples: 300
-          },
           tooltip: {
             titleFont: {
               size: 16,
@@ -233,10 +217,6 @@ export class AggregateChart extends LitElement {
       right: [...this.rightData],
       dates: [...this.dates]
     };
-
-    if (this.debugMode){
-      this.fillRandomData(3);
-    }
   }
 
   updated() {
@@ -247,7 +227,7 @@ export class AggregateChart extends LitElement {
         this.rightData !== this._lastUpdateData.right ||
         this.dates !== this._lastUpdateData.dates;
 
-      if (dataChanged && this.leftData.length > 0 && this.rightData.length > 0 && this.dates.length > 0) {
+      if (dataChanged) {
         console.log("Data changed, updating chart");
         const labels = this.dates.map((date) => date.getTime());
 
@@ -263,6 +243,13 @@ export class AggregateChart extends LitElement {
 
         this._chart.data.datasets[0].data = seriesA;
         this._chart.data.datasets[1].data = seriesB;
+
+        const size = labels.length;
+        const barThickness = Math.max(4, Math.min(40, 180 / size)); // Adjust bar thickness based on number of bars
+        this._chart.data.datasets.forEach(dataset => {
+          (dataset as any).barThickness = barThickness;
+        });
+
         this._chart.update();
 
         // Update tracking
@@ -327,23 +314,5 @@ export class AggregateChart extends LitElement {
     }
     
     chart.update();
-  }
-
-  private fillRandomData(hours: number) {
-    const points = hours * 3600;
-
-    this.leftData = Array.from({ length: points }, () => 0);
-    this.rightData = Array.from({ length: points }, () => 0);
-
-    console.log(`Filling random data for ${hours} hours (${points} points)`);
-
-    for (let i = 1; i < points; i++) {
-      const newLeft = this.leftData[i - 1] + (Math.random() - 0.499) * 0.05;
-      const newRight = this.rightData[i - 1] + (Math.random() - 0.499) * 0.05;
-      this.leftData[i] = Math.max(0, newLeft);
-      this.rightData[i] = Math.max(0, newRight);
-    }
-
-    this.setData(this.leftData, this.rightData);
   }
 }

@@ -76,7 +76,12 @@ export class RunView extends LitElement {
   }
 
   extractRunData() {
-    if (!this.runs) return;
+    if (!this.runs || this.runs.length === 0) {
+      this.timestamps = [];
+      this.leftData = [];
+      this.rightData = [];
+      return;
+    };
 
     this.timestamps = this.runs.map(run => new Date(run.began || ""));
     this.leftData = this.runs.map(run => run.avgLeft || 0);
@@ -110,6 +115,8 @@ export class RunView extends LitElement {
       .catch((error) => {
         console.error("Error fetching run data:", error);
         this.error = error.message;
+
+        this.runs = [];
       });
     
   }
