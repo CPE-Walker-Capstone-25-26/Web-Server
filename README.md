@@ -104,13 +104,15 @@ Once `pm2` is installed, you can use the following commands:
     pm2 delete truewalk-app
     ```
 
-> **Note**:Make sure to run `pm2 enable` after setup to ensure the server will restart on system reboot.
+> **Note**: Make sure to run `pm2 enable` after setup to ensure the server will restart on system reboot.
 
 ## Network Configuration
+### Initial Setup
 The server listens on port `3000` by default. Ensure that this port is open and properly configured in your firewall settings to allow incoming traffic. If you are deploying the server on a cloud platform, make sure to configure the security groups or firewall rules to allow traffic on port `3000`.
 
 Right now, the server acts as both the API backend and the static file server for the frontend application. In a production environment, you may want to set up a reverse proxy (e.g., using Nginx) to all handle incoming requests from port `80` (the default HTTP port) and route them to the server. This allows users to access the application without needing to specify the port number in the URL. You can also configure SSL/TLS for secure HTTPS connections through the reverse proxy.
 
+### Future Improvements
 If you want to go the extra mile for a production deployment, you should separate the static file hosting from the API server and use a reverse proxy to route different requests based on their subdomain. For example, you could remove the `/app` and `/api` bases and host the frontend application on `www.truewalk.com` and the API server on `api.truewalk.com`, and configure your reverse proxy to route requests accordingly. This allows for better scalability and security, as you can apply different configurations and optimizations to the frontend and backend separately.
 
 ## API Documentation
