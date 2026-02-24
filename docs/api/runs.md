@@ -6,7 +6,7 @@ The runs endpoints manage run data and tracking information. All endpoints are *
 
 > **Note:** Normal users can only access their own runs. Attempting to access another user's run will result in a `403 Forbidden` or `404 Not Found` error.
 
-> **Note**: The raw sensor data fields (`dataLeft` and `dataRight`) can contain large arrays of numbers. The time series data is not included in limited runs to reduce payload size. The website graphs assumen 1 second intervals. Communicate with the harware team to understand the structure and meaning of the sensor data if you need to work with it.
+> **Note**: The raw sensor data fields (`dataLeft` and `dataRight`) can contain large arrays of numbers. The time series data is not included in limited runs to reduce payload size. The website graphs assume 1 second intervals. Communicate with the harware team to understand the structure and meaning of the sensor data if you need to work with it.
 
 ## Endpoints
 
