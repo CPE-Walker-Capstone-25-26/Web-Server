@@ -31,15 +31,23 @@ function ensureDate(value: unknown): Date | undefined {
 }
 
 function index(userId: string): Promise<Run[]> {
-  return RunModel.find({ userId }).exec();
+  return RunModel.find({ userId })
+          .sort({ began: -1 })
+          .exec();
 }
 
 function indexLimited(userId: string): Promise<Run[]>{
-  return RunModel.find({ userId }).select("-dataLeft -dataRight -_id").exec();
+  return RunModel.find({ userId })
+          .sort({ began: -1 })
+          .select("-dataLeft -dataRight -_id")
+          .exec();
 }
 
 function indexLimitedByDate(userId: string, from: Date, to: Date): Promise<Run[]>{
-  return RunModel.find({ userId, began: { $gte: from, $lte: to } }).select("-dataLeft -dataRight -_id").exec();
+  return RunModel.find({ userId, began: { $gte: from, $lte: to } })
+          .sort({ began: -1 })
+          .select("-dataLeft -dataRight -_id")
+          .exec();
 }
 
 function get(id: string, userId: string): Promise<Run | null> {
