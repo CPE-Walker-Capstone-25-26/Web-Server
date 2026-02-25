@@ -18,7 +18,18 @@ Retrieves all runs for the authenticated user.
 
 **Authentication:** Required
 
-**Query Parameters:** None
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `page` | number | No | Page number (1-indexed). If provided without `pagesize`, defaults `pagesize` to 50. |
+| `pagesize` | number | No | Number of runs per page. If provided without `page`, defaults to page 1. |
+
+**Pagination Behavior:**
+- If neither parameter is provided, all runs are returned
+- If only `pagesize` is provided, returns first page (page 1)
+- If only `page` is provided, uses `pagesize = 50`
+- Results are sorted by `began` date in descending order (newest first)
 
 **Success Response:**
 
@@ -63,10 +74,19 @@ Retrieves all runs for the authenticated user.
 | `403` | Forbidden | Invalid or expired token |
 | `500` | Internal Server Error | Server error retrieving runs |
 
-**Example:**
+**Examples:**
 
 ```bash
+# Get all runs
 curl -X GET http://localhost:3000/api/runs \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get first 25 runs
+curl -X GET "http://localhost:3000/api/runs?pagesize=25" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get page 2 with 10 runs per page
+curl -X GET "http://localhost:3000/api/runs?page=2&pagesize=10" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -80,7 +100,18 @@ Retrieves all runs with limited data for the authenticated user. The limited run
 
 **Authentication:** Required
 
-**Query Parameters:** None
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `page` | number | No | Page number (1-indexed). If provided without `pagesize`, defaults `pagesize` to 50. |
+| `pagesize` | number | No | Number of runs per page. If provided without `page`, defaults to page 1. |
+
+**Pagination Behavior:**
+- If neither parameter is provided, all runs are returned
+- If only `pagesize` is provided, returns first page (page 1)
+- If only `page` is provided, uses `pagesize = 50`
+- Results are sorted by `began` date in descending order (newest first)
 
 **Success Response:**
 
@@ -109,10 +140,19 @@ Retrieves all runs with limited data for the authenticated user. The limited run
 | `403` | Forbidden | Invalid or expired token |
 | `500` | Internal Server Error | Server error retrieving runs |
 
-**Example:**
+**Examples:**
 
 ```bash
+# Get all limited runs
 curl -X GET http://localhost:3000/api/runs/limited \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get first page with 20 runs
+curl -X GET "http://localhost:3000/api/runs/limited?pagesize=20" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get page 3 with default 50 runs per page
+curl -X GET "http://localhost:3000/api/runs/limited?page=3" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -131,6 +171,14 @@ Retrieves all runs with limited data for the authenticated user that occurred af
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `from` | ISO date string | Yes | Starting date for the query (inclusive) |
+| `page` | number | No | Page number (1-indexed). If provided without `pagesize`, defaults `pagesize` to 50. |
+| `pagesize` | number | No | Number of runs per page. If provided without `page`, defaults to page 1. |
+
+**Pagination Behavior:**
+- If neither `page` nor `pagesize` is provided, all matching runs are returned
+- If only `pagesize` is provided, returns first page (page 1)
+- If only `page` is provided, uses `pagesize = 50`
+- Results are sorted by `began` date in descending order (newest first)
 
 **Success Response:**
 
@@ -160,10 +208,19 @@ Retrieves all runs with limited data for the authenticated user that occurred af
 | `403` | Forbidden | Invalid or expired token |
 | `500` | Internal Server Error | Server error retrieving runs |
 
-**Example:**
+**Examples:**
 
 ```bash
+# Get all runs after a date
 curl -X GET "http://localhost:3000/api/runs/limited-after?from=2024-01-01T00:00:00Z" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get first 15 runs after a date
+curl -X GET "http://localhost:3000/api/runs/limited-after?from=2024-01-01T00:00:00Z&pagesize=15" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get page 2 after a date (default 50 per page)
+curl -X GET "http://localhost:3000/api/runs/limited-after?from=2024-01-01T00:00:00Z&page=2" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 

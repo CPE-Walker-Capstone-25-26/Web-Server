@@ -6,7 +6,22 @@ const router = express.Router();
 router.get("/", async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId as string;
-    const runs = await Runs.index(userId);
+    let page = req.query.page ? parseInt(req.query.page as string) : undefined;
+    let pagesize = req.query.pagesize ? parseInt(req.query.pagesize as string) : undefined;
+
+    // Apply defaults: if only pagesize provided, use page 1; if only page provided, use pagesize 50
+    if (pagesize !== undefined && page === undefined) page = 1;
+    if (page !== undefined && pagesize === undefined) pagesize = 50;
+
+    // Calculate skip and limit
+    let skip: number | undefined = undefined;
+    let limit: number | undefined = undefined;
+    if (page !== undefined && pagesize !== undefined) {
+      skip = (page - 1) * pagesize;
+      limit = pagesize;
+    }
+
+    const runs = await Runs.index(userId, skip, limit);
     return res.json(runs);
   } catch (err: any) {
     console.error("GET /api/runs error:", err);
@@ -17,7 +32,22 @@ router.get("/", async (req: Request, res: Response) => {
 router.get("/limited", async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId as string;
-    const runs = await Runs.indexLimited(userId);
+    let page = req.query.page ? parseInt(req.query.page as string) : undefined;
+    let pagesize = req.query.pagesize ? parseInt(req.query.pagesize as string) : undefined;
+
+    // Apply defaults: if only pagesize provided, use page 1; if only page provided, use pagesize 50
+    if (pagesize !== undefined && page === undefined) page = 1;
+    if (page !== undefined && pagesize === undefined) pagesize = 50;
+
+    // Calculate skip and limit
+    let skip: number | undefined = undefined;
+    let limit: number | undefined = undefined;
+    if (page !== undefined && pagesize !== undefined) {
+      skip = (page - 1) * pagesize;
+      limit = pagesize;
+    }
+
+    const runs = await Runs.indexLimited(userId, skip, limit);
     return res.json(runs);
   } catch (err: any) {
     console.error("GET /api/runs/dates error:", err);
@@ -31,8 +61,23 @@ router.get("/limited-after", async (req: Request, res: Response) => {
     const from = new Date(req.query.from as string);
     if (isNaN(from.getTime())) {
       return res.status(400).json({ error: "Invalid 'from' date" });
-    } 
-    const runs = await Runs.indexLimitedByDate(userId, from, new Date());
+    }
+    let page = req.query.page ? parseInt(req.query.page as string) : undefined;
+    let pagesize = req.query.pagesize ? parseInt(req.query.pagesize as string) : undefined;
+
+    // Apply defaults: if only pagesize provided, use page 1; if only page provided, use pagesize 50
+    if (pagesize !== undefined && page === undefined) page = 1;
+    if (page !== undefined && pagesize === undefined) pagesize = 50;
+
+    // Calculate skip and limit
+    let skip: number | undefined = undefined;
+    let limit: number | undefined = undefined;
+    if (page !== undefined && pagesize !== undefined) {
+      skip = (page - 1) * pagesize;
+      limit = pagesize;
+    }
+
+    const runs = await Runs.indexLimitedByDate(userId, from, new Date(), skip, limit);
     return res.json(runs);
   } catch (err: any) {
     console.error("GET /api/runs/limited-after error:", err);

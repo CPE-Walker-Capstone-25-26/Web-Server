@@ -30,24 +30,30 @@ function ensureDate(value: unknown): Date | undefined {
   return undefined;
 }
 
-function index(userId: string): Promise<Run[]> {
-  return RunModel.find({ userId })
-          .sort({ began: -1 })
-          .exec();
+function index(userId: string, skip?: number, limit?: number): Promise<Run[]> {
+  let query = RunModel.find({ userId })
+          .sort({ began: -1 });
+  if (skip !== undefined) query = query.skip(skip);
+  if (limit !== undefined) query = query.limit(limit);
+  return query.exec();
 }
 
-function indexLimited(userId: string): Promise<Run[]>{
-  return RunModel.find({ userId })
+function indexLimited(userId: string, skip?: number, limit?: number): Promise<Run[]>{
+  let query = RunModel.find({ userId })
           .sort({ began: -1 })
-          .select("-dataLeft -dataRight -_id")
-          .exec();
+          .select("-dataLeft -dataRight -_id");
+  if (skip !== undefined) query = query.skip(skip);
+  if (limit !== undefined) query = query.limit(limit);
+  return query.exec();
 }
 
-function indexLimitedByDate(userId: string, from: Date, to: Date): Promise<Run[]>{
-  return RunModel.find({ userId, began: { $gte: from, $lte: to } })
+function indexLimitedByDate(userId: string, from: Date, to: Date, skip?: number, limit?: number): Promise<Run[]>{
+  let query = RunModel.find({ userId, began: { $gte: from, $lte: to } })
           .sort({ began: -1 })
-          .select("-dataLeft -dataRight -_id")
-          .exec();
+          .select("-dataLeft -dataRight -_id");
+  if (skip !== undefined) query = query.skip(skip);
+  if (limit !== undefined) query = query.limit(limit);
+  return query.exec();
 }
 
 function get(id: string, userId: string): Promise<Run | null> {
