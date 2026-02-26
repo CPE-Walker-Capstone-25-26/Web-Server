@@ -1,15 +1,16 @@
 // packages/app/src/router.ts
 
 import { html, TemplateResult } from "lit";
+
+// Import Custom Components
+import "./components/run-chart";
+import "./components/aggregate-chart";
+
+// Import Custom Views
 import "./views/home-view";
-import "./views/track-progress-view";
-import "./views/share-progress-view";
-import "./views/patient-progress-view";
 import "./views/about-view";
 import "./views/contact-view";
 import "./views/construction-view";
-import "./components/run-chart";
-import "./components/aggregate-chart";
 import "./views/run-view";
 import "./views/track-view";
 import "./views/track-aggregate-view";
@@ -74,26 +75,7 @@ export const routes: AppRoute[] = [
     },
   },
 
-  // Sharing Progress View
-  {
-    path: "/app/share",
-    view: () => {
-      return requiresAuth(
-        html`<share-progress-view></share-progress-view>`
-      );
-    },
-  },
-
-  // Patient Progress View
-  {
-    path: "/app/patients",
-    view: () => {
-      return requiresAuth(
-        html`<patient-progress-view></patient-progress-view>`
-      );
-    },
-  },
-
+  // About View
   {
     path: "/app/about",
     view: () => {
@@ -101,6 +83,7 @@ export const routes: AppRoute[] = [
     },
   },
 
+  // Contact View
   {
     path: "/app/contact",
     view: () => {
@@ -108,17 +91,11 @@ export const routes: AppRoute[] = [
     },
   },
 
+  // Pricing View (Under Construction)
   {
     path: "/app/pricing",
     view: () => {
       return html`<construction-view></construction-view>`;
-    },
-  },
-
-  {
-    path: "/app/example-chart",
-    view: () => {
-      return html`<aggregate-chart .leftData=${[10, 20, 30]} .rightData=${[15, 25, 35]} .dates=${[new Date(2024, 0, 1), new Date(2024, 0, 2), new Date(2024, 0, 3)]}></aggregate-chart>`;
     },
   },
 
