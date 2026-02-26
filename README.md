@@ -42,8 +42,6 @@ The project is organized as a monorepo using npm workspaces. It contains two mai
 - `packages/server`: Contains the Express server code, API routes, database models, and server configuration.
 - `packages/app`: Contains the single-page frontend application built with the Mustang framework, including components, styles, and static assets.
 
->`packages/proto` contains the prototype code used for initial testing and development as a multi-page application, but is not part of the main application and should be ignored.
-
 ## Running the Server
 The server can be run in two modes: development for testing and production for deployment.
 
