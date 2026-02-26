@@ -1,6 +1,6 @@
 // packages/app/src/messages.ts
 
-import { User } from "./model";
+import { User } from "server/models";
 
 export type Msg =
   | ["user/load", {}]

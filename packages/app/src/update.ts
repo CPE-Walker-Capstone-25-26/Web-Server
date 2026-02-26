@@ -1,7 +1,8 @@
 // packages/app/src/update.ts
 
 import { Update } from "@calpoly/mustang";
-import { Model, User } from "./model";
+import { User } from "server/models";
+import { Model } from "./model";
 import { Msg } from "./messages";
 
 export default function update(
