@@ -1,4 +1,4 @@
 import {Run} from "./run.js";
-import {User, DataShare} from "./user.js";
+import {User} from "./user.js";
 
-export type { Run, User, DataShare };
+export type { Run, User };

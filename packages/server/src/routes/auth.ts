@@ -60,21 +60,12 @@ router.post("/register", async (req, res) => {
     // Create credentials (username/password) in your credential store:
     await credentials.create(username, password);
 
-    // Generate fake usage data
-    const randomUsage: number[] = Array.from(
-      { length: 156 },
-      () => Math.floor(Math.random() * 100)
-    );
-
-    // Create a matching User record in MongoDB, including that random “usage”:
+    // Create a matching User record in MongoDB
     await Users.create({
       id: username,
       name: username,
       tocAccepted: false,
-      shares: [],
-      receives: [],          // ensure “receives” is initialized
-      usage: randomUsage,    // 156 random ints here
-      isDeleted: false,
+      active: true,
       deletedAt: undefined,
     });
 

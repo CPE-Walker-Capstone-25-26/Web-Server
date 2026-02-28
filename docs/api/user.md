@@ -2,7 +2,7 @@
 
 ## Overview
 
-The user endpoints manage user profiles and data sharing. All endpoints are **protected** and require a valid JWT token in the `Authorization: Bearer <token>` header.
+The user endpoints manage user profiles. All endpoints are **protected** and require a valid JWT token in the `Authorization: Bearer <token>` header.
 
 ### Relationship with Auth Service
 
@@ -37,24 +37,7 @@ Retrieves all user profiles in the system.
     "tocAccepted": boolean,
     "tocVersion": "string",
     "tocTimestamp": "ISO date string",
-    "shares": [
-      {
-        "withUserId": "string",
-        "mode": "temporary | indefinite",
-        "sharedAt": "ISO date string",
-        "expiresAt": "ISO date string"
-      }
-    ],
-    "receives": [
-      {
-        "withUserId": "string",
-        "mode": "temporary | indefinite",
-        "sharedAt": "ISO date string",
-        "expiresAt": "ISO date string"
-      }
-    ],
-    "usage": [number],
-    "isDeleted": boolean,
+    "active": boolean,
     "deletedAt": "ISO date string"
   }
 ]
@@ -103,24 +86,7 @@ Retrieves a specific user profile by username/ID.
   "tocAccepted": boolean,
   "tocVersion": "string",
   "tocTimestamp": "ISO date string",
-  "shares": [
-    {
-      "withUserId": "string",
-      "mode": "temporary | indefinite",
-      "sharedAt": "ISO date string",
-      "expiresAt": "ISO date string"
-    }
-  ],
-  "receives": [
-    {
-      "withUserId": "string",
-      "mode": "temporary | indefinite",
-      "sharedAt": "ISO date string",
-      "expiresAt": "ISO date string"
-    }
-  ],
-  "usage": [number],
-  "isDeleted": boolean,
+  "active": boolean,
   "deletedAt": "ISO date string"
 }
 ```
@@ -160,10 +126,7 @@ Creates a new user profile. **Note:** Users are typically created automatically 
   "tocAccepted": boolean,
   "tocVersion": "string",
   "tocTimestamp": "ISO date string",
-  "shares": [],
-  "receives": [],
-  "usage": [number],
-  "isDeleted": boolean,
+  "active": boolean,
   "deletedAt": "ISO date string"
 }
 ```
@@ -182,10 +145,7 @@ Creates a new user profile. **Note:** Users are typically created automatically 
 |-------|------|-------------|
 | `tocVersion` | string | Version of ToS accepted |
 | `tocTimestamp` | ISO date | When ToS was accepted |
-| `shares` | array | List of DataShare objects for users this user shares with |
-| `receives` | array | List of DataShare objects for users sharing with this user |
-| `usage` | array of numbers | User's usage tracking data |
-| `isDeleted` | boolean | Whether account is marked for deletion |
+| `active` | boolean | Whether the account is active (defaults to true) |
 | `deletedAt` | ISO date | When account was marked for deletion |
 
 **Success Response:**
@@ -200,10 +160,7 @@ Creates a new user profile. **Note:** Users are typically created automatically 
   "tocAccepted": boolean,
   "tocVersion": "string",
   "tocTimestamp": "ISO date string",
-  "shares": [],
-  "receives": [],
-  "usage": [number],
-  "isDeleted": boolean,
+  "active": boolean,
   "deletedAt": "ISO date string"
 }
 ```
@@ -229,10 +186,7 @@ curl -X POST http://localhost:3000/api/users \
     "tocAccepted": true,
     "tocVersion": "1.0",
     "tocTimestamp": "2024-01-01T00:00:00Z",
-    "shares": [],
-    "receives": [],
-    "usage": [],
-    "isDeleted": false
+    "active": true
   }'
 ```
 
@@ -261,10 +215,7 @@ Updates a user's profile. Users can only update their own profile (enforced by c
   "tocAccepted": boolean,
   "tocVersion": "string",
   "tocTimestamp": "ISO date string",
-  "shares": [],
-  "receives": [],
-  "usage": [number],
-  "isDeleted": boolean,
+  "active": boolean,
   "deletedAt": "ISO date string"
 }
 ```
@@ -287,10 +238,7 @@ Updates a user's profile. Users can only update their own profile (enforced by c
   "tocAccepted": boolean,
   "tocVersion": "string",
   "tocTimestamp": "ISO date string",
-  "shares": [],
-  "receives": [],
-  "usage": [number],
-  "isDeleted": boolean,
+  "active": boolean,
   "deletedAt": "ISO date string"
 }
 ```
@@ -316,10 +264,7 @@ curl -X PUT http://localhost:3000/api/users/john_doe \
     "tocAccepted": true,
     "tocVersion": "1.0",
     "tocTimestamp": "2024-01-01T00:00:00Z",
-    "shares": [],
-    "receives": [],
-    "usage": [45, 52, 48, 55],
-    "isDeleted": false
+    "active": true
   }'
 ```
 
@@ -362,173 +307,6 @@ curl -X DELETE http://localhost:3000/api/users/john_doe \
 
 ---
 
-### Create Data Share
-
-Creates a data sharing relationship between two users. The authenticated user shares their data with another user.
-
-**Endpoint:** `POST /api/users/:id/share`
-
-**Authentication:** Required
-
-**Path Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `id` | string | The user ID (username) initiating the share - must match authenticated user |
-
-**Request Body:**
-
-```json
-{
-  "withUserId": "string",
-  "mode": "temporary | indefinite",
-  "sharedAt": "ISO date string",
-  "expiresAt": "ISO date string"
-}
-```
-
-**Required Fields:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `withUserId` | string | The ID (username) of the user receiving the share |
-
-**Optional Fields:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `mode` | string | Share type: `temporary` (expires) or `indefinite` (ongoing). Defaults to `indefinite` if not provided |
-| `sharedAt` | ISO date | When the share was created. Defaults to current timestamp if not provided |
-| `expiresAt` | ISO date | When temporary share expires. Only used if mode is `temporary` |
-
-**Sharing Details:**
-
-- When a share is created, a **DataShare record is added to the sharer's `shares[]` array**
-- A corresponding **DataShare record is added to the recipient's `receives[]` array**
-- Both records contain the same information (mode, dates, etc.)
-- The relationship is bidirectional for tracking purposes
-
-**Success Response:**
-
-- **Status:** 200 OK
-- **Body:** Updated User object (the sharer) with the new share added to `shares[]`
-
-```json
-{
-  "id": "string",
-  "name": "string",
-  "tocAccepted": boolean,
-  "tocVersion": "string",
-  "tocTimestamp": "ISO date string",
-  "shares": [
-    {
-      "withUserId": "string",
-      "mode": "temporary | indefinite",
-      "sharedAt": "ISO date string",
-      "expiresAt": "ISO date string"
-    }
-  ],
-  "receives": [],
-  "usage": [number],
-  "isDeleted": boolean,
-  "deletedAt": "ISO date string"
-}
-```
-
-**Error Responses:**
-
-| Status | Error | Description |
-|--------|-------|-------------|
-| `400` | Bad Request | Missing or invalid `withUserId` field |
-| `401` | Unauthorized | Missing or invalid token |
-| `403` | Forbidden | Attempting to share from another user's account or invalid token |
-| `404` | Not Found | Sharer user not found (recipient may not exist but share is still created) |
-| `500` | Internal Server Error | Server error creating share |
-
-**Example:**
-
-```bash
-# Create an indefinite share
-curl -X POST http://localhost:3000/api/users/john_doe/share \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  -d '{
-    "withUserId": "jane_smith",
-    "mode": "indefinite"
-  }'
-
-# Create a temporary share that expires in 7 days
-curl -X POST http://localhost:3000/api/users/john_doe/share \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  -d '{
-    "withUserId": "doctor_smith",
-    "mode": "temporary",
-    "expiresAt": "2024-02-03T00:00:00Z"
-  }'
-```
-
----
-
-### Delete Data Share
-
-Removes a data sharing relationship between two users. The authenticated user stops sharing their data with another user.
-
-**Endpoint:** `DELETE /api/users/:id/share/:withUserId`
-
-**Authentication:** Required
-
-**Path Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `id` | string | The user ID (username) stopping the share - must match authenticated user |
-| `withUserId` | string | The ID (username) of the user to stop sharing with |
-
-**Sharing Details:**
-
-- Removes the DataShare record from the sharer's `shares[]` array
-- Removes the corresponding DataShare record from the recipient's `receives[]` array
-- The relationship is completely removed from both sides
-
-**Success Response:**
-
-- **Status:** 200 OK
-- **Body:** Updated User object (the sharer) with the share removed from `shares[]`
-
-```json
-{
-  "id": "string",
-  "name": "string",
-  "tocAccepted": boolean,
-  "tocVersion": "string",
-  "tocTimestamp": "ISO date string",
-  "shares": [],
-  "receives": [],
-  "usage": [number],
-  "isDeleted": boolean,
-  "deletedAt": "ISO date string"
-}
-```
-
-**Error Responses:**
-
-| Status | Error | Description |
-|--------|-------|-------------|
-| `401` | Unauthorized | Missing or invalid token |
-| `403` | Forbidden | Attempting to stop sharing from another user's account or invalid token |
-| `404` | Not Found | Sharer user not found |
-| `500` | Internal Server Error | Server error removing share |
-
-**Example:**
-
-```bash
-curl -X DELETE http://localhost:3000/api/users/john_doe/share/jane_smith \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-```
-
----
-
 ## Data Models
 
 ### User Object
@@ -540,21 +318,8 @@ curl -X DELETE http://localhost:3000/api/users/john_doe/share/jane_smith \
 | `tocAccepted` | boolean | Whether user has accepted current terms of service |
 | `tocVersion` | string | Version of ToS accepted |
 | `tocTimestamp` | ISO date | When ToS was accepted |
-| `shares` | array of DataShare | Users this account is sharing data with |
-| `receives` | array of DataShare | Users sharing data with this account |
-| `usage` | array of numbers | User's usage tracking data (initialized during registration) |
-| `isDeleted` | boolean | Whether account is marked for deletion |
+| `active` | boolean | Whether the account is active (true = active, false = inactive) |
 | `deletedAt` | ISO date | When account was marked for deletion |
-
-### DataShare Object
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `withUserId` | string | The other user's ID (username) |
-| `mode` | string | Share type: `temporary` (has expiration) or `indefinite` (no expiration) |
-| `sharedAt` | ISO date | When the share was created |
-| `expiresAt` | ISO date | When temporary share expires (only present for temporary shares) |
-
 ---
 
 ## Access Control
@@ -568,8 +333,6 @@ All user endpoints require authentication via JWT token. The token user ID (extr
 - **POST /api/users** - Any authenticated user can create users
 - **PUT /api/users/:id** - User can only update their own profile (enforced by comparing JWT user ID)
 - **DELETE /api/users/:id** - Users can delete user records
-- **POST /api/users/:id/share** - User can only initiate shares from their own account
-- **DELETE /api/users/:id/share/:withUserId** - User can only remove shares from their own account
 
 ### Authentication to Auth Service
 
@@ -579,9 +342,7 @@ When a user registers via `/api/auth/register`:
    - `id` = username
    - `name` = username (default)
    - `tocAccepted` = false
-   - `usage` = array of 156 random numbers (0-99)
-   - `shares` = empty array
-   - `receives` = empty array
+   - `active` = true
 
 The user ID from the JWT token is derived from the same username/ID as the User profile.
 
@@ -611,39 +372,19 @@ curl -X GET http://localhost:3000/api/auth/me \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### Share Data Between Users
+### Update User Profile
 
 ```bash
-# User 1 (john_doe) shares with User 2 (jane_smith)
-curl -X POST http://localhost:3000/api/users/john_doe/share \
+# Update user's name and active status
+curl -X PUT http://localhost:3000/api/users/john_doe \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <john_token>" \
+  -H "Authorization: Bearer <token>" \
   -d '{
-    "withUserId": "jane_smith",
-    "mode": "indefinite"
+    "id": "john_doe",
+    "name": "Johnny Smith",
+    "tocAccepted": true,
+    "tocVersion": "1.0",
+    "tocTimestamp": "2024-01-01T00:00:00Z",
+    "active": true
   }'
-
-# Verify - jane_smith should now see john_doe in their receives[]
-curl -X GET http://localhost:3000/api/users/jane_smith \
-  -H "Authorization: Bearer <jane_token>"
-
-# Stop sharing
-curl -X DELETE http://localhost:3000/api/users/john_doe/share/jane_smith \
-  -H "Authorization: Bearer <john_token>"
-```
-
-### Temporary Share with Expiration
-
-```bash
-# Doctor shares patient data for 30 days
-EXPIRE_DATE=$(date -u -d '+30 days' +%Y-%m-%dT%H:%M:%SZ)
-
-curl -X POST http://localhost:3000/api/users/patient_id/share \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <patient_token>" \
-  -d "{
-    \"withUserId\": \"doctor_id\",
-    \"mode\": \"temporary\",
-    \"expiresAt\": \"$EXPIRE_DATE\"
-  }"
 ```

@@ -1,31 +1,7 @@
 // packages/server/src/services/user-svc.ts
 
 import { Schema, model } from "mongoose";
-import { User, DataShare } from "../models/user";
-
-// Data Sahre Schema
-const DataShareSchema = new Schema<DataShare>(
-  {
-    withUserId: {
-      type: String,
-      required: true,
-      trim: true,
-      ref: "User",
-    },
-    mode: {
-      type: String,
-      enum: ["temporary", "indefinite"],
-      required: true,
-    },
-    sharedAt: {
-      type: Date,
-      default: () => new Date(),
-      required: true,
-    },
-    expiresAt: Date,
-  },
-  { _id: false }
-);
+import { User } from "../models/user";
 
 // Main User schema: receives and shares
 const UserSchema = new Schema<User>(
@@ -48,23 +24,9 @@ const UserSchema = new Schema<User>(
     tocVersion: String,
     tocTimestamp: Date,
 
-    shares: {
-      type: [DataShareSchema],
-      default: [],
-    },
-    receives: {
-      type: [DataShareSchema],
-      default: [],
-    },
-
-    usage: {
-      type: [Number],
-      default: () =>
-        Array.from({ length: 156 }, () => Math.floor(Math.random() * 71)),
-    },
-    isDeleted: {
+    active: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     deletedAt: Date,
   },

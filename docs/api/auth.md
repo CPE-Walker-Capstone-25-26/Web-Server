@@ -150,24 +150,7 @@ Retrieves the profile information of the currently authenticated user.
   "tocAccepted": boolean,
   "tocVersion": "string",
   "tocTimestamp": "ISO date string",
-  "shares": [
-    {
-      "withUserId": "string",
-      "mode": "temporary | indefinite",
-      "sharedAt": "ISO date string",
-      "expiresAt": "ISO date string"
-    }
-  ],
-  "receives": [
-    {
-      "withUserId": "string",
-      "mode": "temporary | indefinite",
-      "sharedAt": "ISO date string",
-      "expiresAt": "ISO date string"
-    }
-  ],
-  "usage": [number],
-  "isDeleted": boolean,
+  "active": boolean,
   "deletedAt": "ISO date string"
 }
 ```
@@ -181,20 +164,9 @@ Retrieves the profile information of the currently authenticated user.
 | `tocAccepted` | boolean | Whether user has accepted terms of service |
 | `tocVersion` | string | Version of ToS accepted |
 | `tocTimestamp` | ISO date | When ToS was accepted |
-| `shares` | array | List of users this user is sharing data with |
-| `receives` | array | List of users this user is receiving data from |
-| `usage` | array of numbers | User's usage data |
-| `isDeleted` | boolean | Whether account is marked for deletion |
+| `active` | boolean | Whether the account is active (true = active, false = inactive) |
 | `deletedAt` | ISO date | When account was marked for deletion |
 
-**DataShare Object:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `withUserId` | string | The other user's identifier |
-| `mode` | string | Share type: `temporary` (expires) or `indefinite` (ongoing) |
-| `sharedAt` | ISO date | When the share was created |
-| `expiresAt` | ISO date | When temporary share expires (only for temporary shares) |
 
 **Error Responses:**
 
