@@ -226,6 +226,75 @@ curl -X GET "http://localhost:3000/api/runs/limited-after?from=2024-01-01T00:00:
 
 ---
 
+### Get Limited-Data Runs Between Dates
+
+Retrieves all runs with limited data for the authenticated user that occurred between two specified dates.
+
+**Endpoint:** `GET /api/runs/limited-between`
+
+**Authentication:** Required
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `from` | ISO date string | Yes | Starting date for the query (inclusive) |
+| `to` | ISO date string | Yes | Ending date for the query (inclusive) |
+| `page` | number | No | Page number (1-indexed). If provided without `pagesize`, defaults `pagesize` to 50. |
+| `pagesize` | number | No | Number of runs per page. If provided without `page`, defaults to page 1. |
+
+**Pagination Behavior:**
+- If neither `page` nor `pagesize` is provided, all matching runs are returned
+- If only `pagesize` is provided, returns first page (page 1)
+- If only `page` is provided, uses `pagesize = 50`
+- Results are sorted by `began` date in descending order (newest first)
+
+**Success Response:**
+
+- **Status:** 200 OK
+- **Body:** Array of Run objects
+
+```json
+[
+  {
+    "id": "string",
+    "userId": "string",
+    "began": "ISO date string",
+    "distanceKm": number,
+    "duration": number,
+    "avgLeft": number,
+    "avgRight": number
+  }
+]
+```
+
+**Error Responses:**
+
+| Status | Error | Description |
+|--------|-------|-------------|
+| `400` | Bad Request | Invalid 'from' or 'to' date format |
+| `401` | Unauthorized | Missing or invalid token |
+| `403` | Forbidden | Invalid or expired token |
+| `500` | Internal Server Error | Server error retrieving runs |
+
+**Examples:**
+
+```bash
+# Get all runs between two dates
+curl -X GET "http://localhost:3000/api/runs/limited-between?from=2024-01-01T00:00:00Z&to=2024-01-31T23:59:59Z" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get first 20 runs in date range
+curl -X GET "http://localhost:3000/api/runs/limited-between?from=2024-01-01T00:00:00Z&to=2024-01-31T23:59:59Z&pagesize=20" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Get page 2 in date range (default 50 per page)
+curl -X GET "http://localhost:3000/api/runs/limited-between?from=2024-01-01T00:00:00Z&to=2024-01-31T23:59:59Z&page=2" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+---
+
 ### Get Single Run
 
 Retrieves a specific run by ID. Users can only access their own runs.
