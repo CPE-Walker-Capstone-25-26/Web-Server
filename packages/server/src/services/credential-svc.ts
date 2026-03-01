@@ -7,6 +7,7 @@ import { Credential } from "../models/credential";
 const credentialSchema = new Schema<Credential>(
   {
     username:      { type: String, required: true, trim: true },
+    type:          { type: String, required: true },
     hashedPassword:{ type: String, required: true },
   },
   { collection: "user_credentials" }
@@ -14,7 +15,7 @@ const credentialSchema = new Schema<Credential>(
 const credentialModel = model<Credential>("Credential", credentialSchema);
 
 // create: fail if exists, else bcrypt.hash & save
-function create(username: string, password: string): Promise<Credential> {
+function create(username: string, password: string, type: string): Promise<Credential> {
   return credentialModel
     .find({ username })
     .then(found => {
@@ -22,7 +23,7 @@ function create(username: string, password: string): Promise<Credential> {
     })
     .then(() => bcrypt.genSalt(10))
     .then(salt => bcrypt.hash(password, salt))
-    .then(hash => new credentialModel({ username, hashedPassword: hash }).save());
+    .then(hash => new credentialModel({ username, hashedPassword: hash, type }).save());
 }
 
 // verify: lookup + bcrypt.compare

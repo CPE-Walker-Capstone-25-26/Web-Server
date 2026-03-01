@@ -1,4 +1,3 @@
-<!-- public/signup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,7 +68,7 @@
 
       // check for redirect param, default to track_progress.html
       const params   = new URLSearchParams(window.location.search);
-      const redirect = params.get('redirect') || 'track_progress.html';
+      const redirect = params.get('redirect') || '/';
 
       // form submission handler
       form.addEventListener('submit', async (e) => {

@@ -31,17 +31,18 @@ export function authenticateUser(
     if (err) {
       return res.status(403).end();
     }
-    // Attach the username for downstream lookups:
+    // Attach the username and type for downstream lookups:
     (req as any).userId = (payload as any).username;
+    (req as any).userType = (payload as any).type;
     next();
   });
 }
 
 /** helper to sign & return a JWT for a given username */
-function generateAccessToken(username: string): Promise<string> {
+function generateAccessToken(username: string, type: string): Promise<string> {
   return new Promise((resolve, reject) =>
     jwt.sign(
-      { username },
+      { username, type },
       TOKEN_SECRET,
       { expiresIn: "1d" },
       (err, token) => (err ? reject(err) : resolve(token!))
@@ -58,7 +59,7 @@ router.post("/register", async (req, res) => {
 
   try {
     // Create credentials (username/password) in your credential store:
-    await credentials.create(username, password);
+    await credentials.create(username, password, "user");
 
     // Create a matching User record in MongoDB
     await Users.create({
@@ -70,7 +71,7 @@ router.post("/register", async (req, res) => {
     });
 
     // Issue a JWT and return it:
-    const token = await generateAccessToken(username);
+    const token = await generateAccessToken(username, "user");
     return res.status(201).json({ token });
   } catch (err: any) {
     return res.status(409).json({ error: err.message });
@@ -86,7 +87,7 @@ router.post("/login", async (req: Request, res: Response) => {
 
   try {
     await credentials.verify(username, password);
-    const token = await generateAccessToken(username);
+    const token = await generateAccessToken(username, "user");
     return res.status(200).json({ token });
   } catch {
     return res.status(401).send("Unauthorized");
