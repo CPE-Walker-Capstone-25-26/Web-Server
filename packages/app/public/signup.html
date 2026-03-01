@@ -68,7 +68,7 @@
 
       // check for redirect param, default to track_progress.html
       const params   = new URLSearchParams(window.location.search);
-      const redirect = params.get('redirect') || '/';
+      const redirect = params.get('redirect') || 'login.html';
 
       // form submission handler
       form.addEventListener('submit', async (e) => {

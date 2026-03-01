@@ -3,7 +3,7 @@
 import dotenv from "dotenv";
 import express, { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import credentials from "../services/credential-svc";
+import credentials  from "../services/credential-svc";
 import Users from "../services/user-svc";
 
 dotenv.config();
@@ -87,7 +87,10 @@ router.post("/login", async (req: Request, res: Response) => {
 
   try {
     await credentials.verify(username, password);
-    const token = await generateAccessToken(username, "user");
+    console.log(`User ${username} authenticated successfully`);
+    const type = await credentials.getType(username);
+    console.log(`User ${username} logged in with type ${type}`);
+    const token = await generateAccessToken(username, type);
     return res.status(200).json({ token });
   } catch {
     return res.status(401).send("Unauthorized");

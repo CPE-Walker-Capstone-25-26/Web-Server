@@ -43,4 +43,14 @@ function verify(username: string, password: string): Promise<string> {
     );
 }
 
-export default { create, verify };
+function getType(username: string): Promise<string> {
+  return credentialModel
+    .find({ username })
+    .then(found => {
+      if (!found.length) throw new Error("User not found");
+      return found[0].type;
+    });
+}
+
+export default { create, verify, getType };
+

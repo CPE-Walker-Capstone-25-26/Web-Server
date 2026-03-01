@@ -8,6 +8,12 @@ const router = express.Router();
 
 router.get("/", async (_req: Request, res: Response) => {
   try {
+
+    const type = (_req as any).userType;
+    if (type !== "admin") {
+      return res.status(403).send("Forbidden: only admins can view all users");
+    }
+
     const allUsers = await Users.index();
     return res.json(allUsers);
   } catch (err: any) {
@@ -24,6 +30,14 @@ router.get("/", async (_req: Request, res: Response) => {
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const username = req.params.id;
+
+    const type = (req as any).userType;
+
+    // JWT middleware (authenticateUser) should have set req.userId:
+    if ((req as any).userId !== username && type !== "admin") {
+      return res.status(403).send("Forbidden: cannot view another user's profile");
+    }
+
     const user = await Users.get(username);
     if (!user) {
       return res.status(404).send("User not found");
@@ -35,22 +49,6 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-/**
- * POST /api/users
- *   create a brand‐new user document
- *   expects the full User shape in req.body
- *   returns 201 + JSON(newUser) on success
- *   returns 400 if validation fails
- */
-router.post("/", async (req: Request, res: Response) => {
-  try {
-    const newUser = await Users.create(req.body);
-    return res.status(201).json(newUser);
-  } catch (err: any) {
-    console.error("POST /api/users error:", err);
-    return res.status(400).json({ error: err.message });
-  }
-});
 
 /**
  * PUT /api/users/:id
@@ -65,7 +63,8 @@ router.put("/:id", async (req: Request, res: Response) => {
     const username = req.params.id;
 
     // JWT middleware (authenticateUser) should have set req.userId:
-    if ((req as any).userId !== username) {
+    const type = (req as any).userType;
+    if ((req as any).userId !== username && type !== "admin") {
       return res.status(403).send("Forbidden: cannot edit another user");
     }
 
@@ -91,6 +90,12 @@ router.put("/:id", async (req: Request, res: Response) => {
  */
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
+
+    const type = (req as any).userType;
+    if (type !== "admin") {
+      return res.status(403).send("Forbidden: only admins can delete users");
+    }
+
     const username = req.params.id;
     await Users.remove(username);
     return res.status(204).end();
