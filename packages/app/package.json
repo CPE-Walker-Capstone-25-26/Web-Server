@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "clean:components": "rimraf src/components/*.js src/views/*.js",
-    "predev": "npm run clean:components",
-    "prebuild": "npm run clean:components",
+    "dev": "npx vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
