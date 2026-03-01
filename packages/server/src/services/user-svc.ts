@@ -58,12 +58,26 @@ function update(id: string, u: User): Promise<User> {
   });
 }
 
+function disable(id: string): Promise<User> {
+  return UserModel.findOneAndUpdate({ id }, { active: false, deletedAt: new Date() }, { new: true }).then((updated) => {
+    if (!updated) throw `${id} not found`;
+    return updated;
+  });
+}
+
 function remove(id: string): Promise<void> {
   return UserModel.findOneAndDelete({ id }).then((deleted) => {
     if (!deleted) throw `${id} not found`;
   });
 }
 
+function isActive(id: string): Promise<boolean> {
+  return UserModel.findOne({ id }).then(user => {
+    if (!user) throw `${id} not found`;
+    return user.active;
+  });
+}
+
 export { UserModel };
 
-export default { index, get, create, update, remove, UserModel };
+export default { index, get, create, update, remove, disable, isActive, UserModel };

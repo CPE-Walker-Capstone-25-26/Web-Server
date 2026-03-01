@@ -270,6 +270,41 @@ curl -X PUT http://localhost:3000/api/users/john_doe \
 
 ---
 
+### Deactivate User
+Marks a user account as inactive (soft delete). The user record remains in the database but is marked as inactive and cannot be used for authentication.
+
+**Endpoint:** `POST /api/users/:id/disable`
+
+**Authentication:** Required
+
+**Path Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `id` | string | The user's ID (username) to deactivate |
+
+**Success Response:**
+- **Status:** 200 OK
+- **Body:** Updated User object with `active` set to false and `deletedAt` set to current timestamp
+
+```json
+{
+  "id": "string",
+  "name": "string",
+  "tocAccepted": boolean,
+  "tocVersion": "string",
+  "tocTimestamp": "ISO date string",
+  "active": false,
+  "deletedAt": "ISO date string"
+}
+```
+
+**Error Responses:**
+| Status | Error | Description |
+|--------|-------|-------------|
+| `401` | Unauthorized | Missing or invalid token |
+| `403` | Forbidden | Attempting to deactivate another user's profile or invalid token |
+| `404` | Not Found | User not found |
+
 ### Delete User
 
 Deletes a user profile from the system.

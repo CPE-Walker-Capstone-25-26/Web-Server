@@ -105,5 +105,26 @@ router.delete("/:id", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/:id/disable", async (req: Request, res: Response) => {
+  try {
+    const username = req.params.id;
+
+    // JWT middleware (authenticateUser) should have set req.userId:
+    const type = (req as any).userType;
+    if ((req as any).userId !== username && type !== "admin") {
+      return res.status(403).send("Forbidden: cannot disable another user");
+    }
+
+    const updatedUser = await Users.disable(username);
+
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+    return res.json(updatedUser);
+  } catch (err: any) {
+    console.error(`POST /api/users/${req.params.id}/disable error:`, err);
+    return res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;

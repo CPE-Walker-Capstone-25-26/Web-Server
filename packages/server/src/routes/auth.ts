@@ -87,9 +87,15 @@ router.post("/login", async (req: Request, res: Response) => {
 
   try {
     await credentials.verify(username, password);
-    console.log(`User ${username} authenticated successfully`);
     const type = await credentials.getType(username);
-    console.log(`User ${username} logged in with type ${type}`);
+
+    if (type === "user") {
+      const isActive = await Users.isActive(username);
+      if (!isActive) {
+        return res.status(401).send("Unauthorized: user is disabled");
+      }
+    }
+
     const token = await generateAccessToken(username, type);
     return res.status(200).json({ token });
   } catch {
