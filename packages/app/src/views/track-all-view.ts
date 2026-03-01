@@ -5,7 +5,7 @@ import { Auth, Observer } from "@calpoly/mustang";
 
 type runLimited = Partial<Run>;
 
-@customElement("track-view")
+@customElement("track-all-view")
 export class RunView extends LitElement {
   @state()
   runs?: runLimited[];
@@ -86,6 +86,38 @@ export class RunView extends LitElement {
     .view-links a:hover {
       text-decoration: underline;
     }
+
+    .date-search-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px auto;
+      max-width: 1100px;
+    }
+
+    .date-search-header {
+      font-weight: 600;
+    }
+
+    .date-search-label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+    }
+
+    .date-search-button {
+      padding: 6px 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .date-search-button:hover {
+      background-color: #0056b3;
+    }
+
   `;
 
   get authorization(): Record<string, string> | undefined {
@@ -105,6 +137,16 @@ export class RunView extends LitElement {
     }
     console.log("No authenticated user; no auth header");
     return undefined;
+  }
+
+  private convertToLocalDateInputValue(dateString: Date): string {
+    const year = dateString.getFullYear();
+    const month = String(dateString.getMonth() + 1).padStart(2, '0');
+    const day = String(dateString.getDate()).padStart(2, '0');
+
+    const localDate = `${year}-${month}-${day}`;
+
+    return localDate;
   }
 
   async hydrateRunData() {
@@ -154,6 +196,55 @@ export class RunView extends LitElement {
     }).format(date);
   }
 
+  renderDateSearch() {
+    const today = this.convertToLocalDateInputValue(new Date());
+    const firstRunDate = this.runs?.length ? this.convertToLocalDateInputValue(new Date(this.runs[this.runs.length - 1].began || new Date())) : today;
+
+    return html`
+      <div class="date-search-container">
+        <div class="date-search-header">   
+          Search by date:
+        </div>
+        <label class="date-search-label">
+          Start date:
+          <input type="date" name="start" id="start-date" value=${firstRunDate} max=${today} min=${firstRunDate}>
+        </label>
+
+        <label class="date-search-label">
+          End date:
+          <input type="date" name="end" id="end-date" value=${today} max=${today} min=${firstRunDate}>
+        </label>
+        <button class="date-search-button" @click=${this.handleDateSearch}>Search</button>
+      </div>
+    `;
+  }
+
+  handleDateSearch(event: any) {
+    const startInput = this.renderRoot.querySelector("#start-date") as HTMLInputElement;
+    const endInput = this.renderRoot.querySelector("#end-date") as HTMLInputElement;
+    const startDate = startInput.value ? new Date(startInput.value) : null;
+    const endDate = endInput.value ? new Date(endInput.value) : null;
+
+    if (startDate && endDate && startDate > endDate) {
+      alert("Start date cannot be after end date.");
+      return;
+    }
+
+    const filteredRuns = this.runs?.filter(run => {
+      const runDate = run.began ? new Date(run.began) : null;
+      if (!runDate) return false;
+      if (startDate && runDate < startDate) return false;
+      if (endDate && runDate > endDate) return false;
+      return true;
+    });
+
+    if (filteredRuns) {
+      this.runs = filteredRuns;
+    } else {
+      alert("No runs found for the selected date range.");
+    }
+  }
+
   override render() {
     if (this.error){
       return this.renderError();
@@ -170,6 +261,7 @@ export class RunView extends LitElement {
         <a href="/app/track?view=all" style="text-decoration: underline;">All Runs</a> |
         <a href="/app/track?view=aggregate">Aggregate</a>
       </div>
+      ${this.renderDateSearch()}
       <div class="run-card-container">
         ${this.runs.map(run => html`
           <div class="run-card">
@@ -177,6 +269,8 @@ export class RunView extends LitElement {
             ${run.distanceKm ? html`<span>${run.distanceKm.toFixed(2)} km</span>` : html`<span>No distance</span>`}
           </div>
         `)}
+
+        ${this.runs.length === 0 ? html`<p>No runs found for the selected date range.</p>` : null}
       </div>
     `;
   }

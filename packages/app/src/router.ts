@@ -11,8 +11,8 @@ import "./views/home-view";
 import "./views/about-view";
 import "./views/contact-view";
 import "./views/construction-view";
-import "./views/run-view";
-import "./views/track-view";
+import "./views/track-individual-view";
+import "./views/track-all-view";
 import "./views/track-aggregate-view";
 
 import {Switch} from "@calpoly/mustang";
@@ -60,7 +60,7 @@ export const routes: AppRoute[] = [
       }
       console.log("Rendering view ", viewMode);
       return requiresAuth(
-        html`<track-view></track-view>`
+        html`<track-all-view></track-all-view>`
       );
     },
   },
