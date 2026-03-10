@@ -117,9 +117,11 @@ export class RunView extends LitElement {
         ></run-chart>
         <div class="run-info">
           <strong>Details:</strong>
-          <p>Total Distance: ${this.run.distanceKm} km</p>
-          <p>Average Left Hand Weight: ${this.run.avgLeft}lbs</p>
-          <p>Average Right Hand Weight: ${this.run.avgRight}lbs</p>
+          <p>Total Distance: ${this.run.distanceKm ? this.run.distanceKm : "N/A"} km</p>
+          <p>Total Duration: ${this.run.duration ? this.run.duration : "N/A"} seconds</p>
+          <p>Total Steps: ${this.run.steps ? this.run.steps : "N/A"}</p>
+          <p>Average Left Hand Weight: ${this.run.avgLeft ? this.run.avgLeft : "N/A"}lbs</p>
+          <p>Average Right Hand Weight: ${this.run.avgRight ? this.run.avgRight : "N/A"}lbs</p>
         </div>
       </div>
     `;
