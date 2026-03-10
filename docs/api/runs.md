@@ -44,6 +44,7 @@ Retrieves all runs for the authenticated user.
     "began": "ISO date string",
     "distanceKm": number,
     "duration": number,
+    "steps": number,
     "dataLeft": [number],
     "avgLeft": number,
     "dataRight": [number],
@@ -61,6 +62,7 @@ Retrieves all runs for the authenticated user.
 | `began` | ISO date | Timestamp when the run started |
 | `distanceKm` | number | Distance covered in kilometers |
 | `duration` | number | Duration of the run in seconds |
+| `steps` | number | Total number of steps taken |
 | `dataLeft` | array of numbers | Sensor data from left side |
 | `avgLeft` | number | Average of left side data |
 | `dataRight` | array of numbers | Sensor data from right side |
@@ -126,6 +128,7 @@ Retrieves all runs with limited data for the authenticated user. The limited run
     "began": "ISO date string",
     "distanceKm": number,
     "duration": number,
+    "steps": number,
     "avgLeft": number,
     "avgRight": number
   }
@@ -193,6 +196,7 @@ Retrieves all runs with limited data for the authenticated user that occurred af
     "began": "ISO date string",
     "distanceKm": number,
     "duration": number,
+    "steps": number,
     "avgLeft": number,
     "avgRight": number
   }
@@ -262,6 +266,7 @@ Retrieves all runs with limited data for the authenticated user that occurred be
     "began": "ISO date string",
     "distanceKm": number,
     "duration": number,
+    "steps": number,
     "avgLeft": number,
     "avgRight": number
   }
@@ -321,6 +326,7 @@ Retrieves a specific run by ID. Users can only access their own runs.
   "began": "ISO date string",
   "distanceKm": number,
   "duration": number,
+  "steps": number,
   "dataLeft": [number],
   "avgLeft": number,
   "dataRight": [number],
@@ -402,6 +408,7 @@ Creates a new run record. **The user ID is automatically attached to the run bas
   "began": "ISO date string",
   "distanceKm": number,
   "duration": number,
+  "steps": number,
   "dataLeft": [number],
   "avgLeft": number,
   "dataRight": [number],
@@ -428,6 +435,7 @@ curl -X POST http://localhost:3000/api/runs \
     "began": "2024-01-15T08:30:00Z",
     "distanceKm": 5.2,
     "duration": 1800,
+    "steps": 6500,
     "dataLeft": [45, 52, 48, 55],
     "avgLeft": 50,
     "dataRight": [48, 51, 49, 52],
@@ -493,6 +501,7 @@ Updates an existing run. Users can only update their own runs.
   "began": "ISO date string",
   "distanceKm": number,
   "duration": number,
+  "steps": number,
   "dataLeft": [number],
   "avgLeft": number,
   "dataRight": [number],
@@ -517,7 +526,8 @@ curl -X PUT http://localhost:3000/api/runs/507f1f77bcf86cd799439011 \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -d '{
     "distanceKm": 5.5,
-    "duration": 1850
+    "duration": 1850,
+    "steps": 6750
   }'
 ```
 
@@ -571,6 +581,7 @@ curl -X DELETE http://localhost:3000/api/runs/507f1f77bcf86cd799439011 \
 | `began` | ISO date | **Required** - When the run started |
 | `distanceKm` | number | Distance covered in kilometers |
 | `duration` | number | Duration of the run in seconds |
+| `steps` | number | Total number of steps taken |
 | `dataLeft` | array of numbers | Sensor data measurements from left side |
 | `avgLeft` | number | Average value of left side data |
 | `dataRight` | array of numbers | Sensor data measurements from right side |

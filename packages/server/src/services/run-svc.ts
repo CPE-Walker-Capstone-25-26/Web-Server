@@ -8,6 +8,7 @@ const RunSchema = new Schema<Run>(
     began: { type: Date, required: true },
     distanceKm: Number,
     duration: Number,
+    steps: Number,
     dataLeft: { type: [Number], default: [] },
     avgLeft: Number,
     dataRight: { type: [Number], default: [] },

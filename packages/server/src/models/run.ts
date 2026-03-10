@@ -4,6 +4,7 @@ export interface Run {
     began: Date;
     distanceKm?: number;
     duration?: number;
+    steps?: number;
     
     dataLeft?: number[];  
     avgLeft?: number;

@@ -266,7 +266,7 @@ export class RunView extends LitElement {
         ${this.runs.map(run => html`
           <div class="run-card">
             <a href="/app/track/${run.id}">${run.began ? this.formatDate(new Date(run.began)) : 'No date'}</a> <br>
-            ${run.distanceKm ? html`<span>${run.distanceKm.toFixed(2)} km</span>` : html`<span>No distance</span>`}
+            ${run.distanceKm !== undefined && run.distanceKm !== null ? html`<span>${run.distanceKm.toFixed(2)} km</span>` : html`<span>No distance</span>`}
           </div>
         `)}
 
