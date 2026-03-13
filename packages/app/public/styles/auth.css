@@ -1,0 +1,94 @@
+/* Auth pages (login + signup) */
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.7rem;
+	padding: 1rem;
+	transform: translateY(-5rem);
+	font-family: 'Open Sans', sans-serif;
+	background: var(--color-background, whitesmoke);
+	color: var(--color-primary, #182d3b);
+}
+
+h2 {
+	margin: 0 0 1rem 0;
+	text-align: center;
+	color: var(--color-primary, #182d3b);
+	font-weight: 700;
+}
+
+form {
+	width: min(100%, 360px);
+	display: grid;
+	gap: 0.9rem;
+	background: var(--color-box, #fff);
+	border: 1px solid rgba(24, 45, 59, 0.18);
+	border-radius: 14px;
+	padding: 1.2rem;
+	box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+label {
+	display: grid;
+	gap: 0.35rem;
+	font-size: 0.95rem;
+	color: var(--color-primary, #182d3b);
+}
+
+input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.55rem 0.65rem;
+	border: 1px solid rgba(24, 45, 59, 0.3);
+	border-radius: 8px;
+	background: #fff;
+	color: var(--color-primary, #182d3b);
+}
+
+input:focus {
+	outline: 2px solid rgba(3, 83, 164, 0.35);
+	border-color: var(--color-secondary, #0353A4);
+}
+
+button {
+	margin-top: 0.35rem;
+	padding: 0.6rem 0.8rem;
+	border: none;
+	border-radius: 8px;
+	background: var(--color-secondary, #0353A4);
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+button:hover {
+	background: var(--color-accent, #006DAA);
+}
+
+p {
+	margin: 0.9rem 0 0;
+	text-align: center;
+	color: var(--color-primary, #182d3b);
+}
+
+a {
+	color: var(--color-secondary, #0353A4);
+	font-weight: 600;
+}
+
+a:hover {
+	color: var(--color-accent, #006DAA);
+}
+
+.error {
+	margin-top: 0.15rem;
+	color: #b42318;
+	font-size: 0.92rem;
+	text-align: left;
+}
