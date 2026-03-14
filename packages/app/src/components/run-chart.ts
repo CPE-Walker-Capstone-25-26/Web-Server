@@ -137,7 +137,7 @@ export class RunChart extends LitElement {
             label: "Left", 
             data: seriesA, 
             borderWidth: 2, 
-            tension: 0.1,
+            tension: 0,
             pointRadius: 0,
             pointHoverRadius: 3,
             pointHitRadius: 6
@@ -146,7 +146,7 @@ export class RunChart extends LitElement {
             label: "Right", 
             data: seriesB, 
             borderWidth: 2, 
-            tension: 0.1,
+            tension: 0,
             pointRadius: 0,
             pointHoverRadius: 3,
             pointHitRadius: 6
