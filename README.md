@@ -1,5 +1,5 @@
 # True Walk Web Server
-This is the web server for the True Walk application, developed as part of the CPE 350/450 course at Cal Poly San Luis Obispo (2025-26) in collaboration with Carl Sloane. The server is built using Node.js and Express, providing a robust backend for handling user requests, data management, and serving the frontend application.
+This is the web server for the True Walk application, developed as part of the CPE 350/450 course at Cal Poly San Luis Obispo (2025-26) in collaboration with Carl Sloan. The server is built using Node.js and Express, providing a robust backend for handling user requests, data management, and serving the frontend application.
 
 All data is stored in a MongoDB Atlas database, ensuring scalability and reliability. The frontend application is built with Cal Poly's Mustang framework and served statically from the server. Documentation for the Mustang framework can be found [here](https://github.com/kubiak-calpoly/csc-437-examples/blob/main/packages/mustang/docs/index.md).
 
