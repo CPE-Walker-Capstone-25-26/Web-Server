@@ -113,8 +113,10 @@ Right now, the server acts as both the API backend and the static file server fo
 ### Future Improvements
 If you want to go the extra mile for a production deployment, you should separate the static file hosting from the API server and use a reverse proxy to route different requests based on their subdomain. For example, you could remove the `/app` and `/api` bases and host the frontend application on `www.truewalk.com` and the API server on `api.truewalk.com`, and configure your reverse proxy to route requests accordingly. This allows for better scalability and security, as you can apply different configurations and optimizations to the frontend and backend separately.
 
-## API Documentation
+## Documentation
 Detailed API documentation can be found in the `docs/api` directory. Each endpoint is documented with its method, URL, required parameters, response format, and example requests. The documentation is organized by resource type (e.g., authentication, runs, etc.) for easy navigation.
+
+Details on the frontend application structure, components, and user flows can be found in the `docs/app` directory. This includes information on how the login and signup pages work, how the main application interface is structured, and how different components interact with each other.
 
 ## Acknowledgements
 - Developed as part of the CPE 350/450 course at Cal Poly San Luis Obispo.
